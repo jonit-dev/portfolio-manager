@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\" && eslint . --fix",
     "preview": "vite preview",
-    "type-check": "tsc --noEmit",
+    "tsc": "tsc --noEmit",
     "prepare": "husky"
   },
   "dependencies": {
