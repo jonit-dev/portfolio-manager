@@ -6,21 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
+    "lint": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\" && eslint . --fix",
     "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
-    "tsc": "tsc --noEmit",
+    "type-check": "tsc --noEmit",
     "prepare": "husky"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write",
-      "eslint --fix",
-      "tsc-files --noEmit"
-    ],
-    "*.{js,jsx,json,css,md}": [
-      "prettier --write"
-    ]
   },
   "dependencies": {
     "@tremor/react": "^3.14.1",
@@ -46,11 +35,9 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.9.0",
     "husky": "^9.0.0",
-    "lint-staged": "^15.2.2",
     "postcss": "^8.4.35",
     "prettier": "^3.2.5",
     "tailwindcss": "^3.4.1",
-    "tsc-files": "^1.1.4",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",
     "vite": "^5.4.2"
