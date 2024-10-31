@@ -6,7 +6,11 @@ interface ICardProps {
   className?: string;
 }
 
-export function Card({ title, children, className = '' }: ICardProps) {
+export const Card = ({
+  title,
+  children,
+  className = '',
+}: ICardProps): JSX.Element => {
   return (
     <div className={`card bg-base-200 shadow-xl ${className}`}>
       <div className='card-body'>
@@ -15,4 +19,4 @@ export function Card({ title, children, className = '' }: ICardProps) {
       </div>
     </div>
   );
-}
+};

@@ -5,7 +5,7 @@ interface ILayoutProps {
   children: React.ReactNode;
 }
 
-export function Layout({ children }: ILayoutProps) {
+export const Layout = ({ children }: ILayoutProps): JSX.Element => {
   return (
     <div className='min-h-screen bg-base-100'>
       <div className='max-w-[1600px] mx-auto'>
@@ -20,4 +20,4 @@ export function Layout({ children }: ILayoutProps) {
       </div>
     </div>
   );
-}
+};

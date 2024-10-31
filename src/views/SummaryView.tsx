@@ -7,7 +7,7 @@ interface ISummaryViewProps {
   assets: IAsset[];
 }
 
-export function SummaryView({ assets }: ISummaryViewProps) {
+export const SummaryView = ({ assets }: ISummaryViewProps): JSX.Element => {
   const totalValue = assets.reduce((sum, asset) => sum + asset.valueCAD, 0);
 
   return (
@@ -36,4 +36,4 @@ export function SummaryView({ assets }: ISummaryViewProps) {
       </div>
     </div>
   );
-}
+};

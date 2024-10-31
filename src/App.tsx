@@ -7,7 +7,7 @@ import { IAsset } from './types';
 import { CategoryView } from './views/CategoryView';
 import { SummaryView } from './views/SummaryView';
 
-function App() {
+export const App = (): JSX.Element => {
   const [activeTab, setActiveTab] = useState<string>('summary');
   const [assets] = useState<IAsset[]>(initialAssets);
 
@@ -32,6 +32,4 @@ function App() {
       </Layout>
     </Theme>
   );
-}
-
-export default App;
+};

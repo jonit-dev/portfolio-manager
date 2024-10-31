@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import importPlugin from 'eslint-plugin-import';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
@@ -10,6 +11,8 @@ export default [
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      import: importPlugin,
+      '@typescript-eslint': typescriptEslint,
     },
     languageOptions: {
       parser: typescriptEslint.parser,
@@ -41,6 +44,8 @@ export default [
           prefix: ['I'],
         },
       ],
+      'import/no-default-export': 'error',
+      '@typescript-eslint/explicit-module-boundary-types': 'error',
     },
   },
 ];

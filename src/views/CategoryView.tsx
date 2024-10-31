@@ -8,7 +8,10 @@ interface ICategoryViewProps {
   category: IAssetCategory;
 }
 
-export function CategoryView({ assets, category }: ICategoryViewProps) {
+export const CategoryView = ({
+  assets,
+  category,
+}: ICategoryViewProps): JSX.Element => {
   const totalValue = assets.reduce((sum, asset) => sum + asset.valueCAD, 0);
 
   return (
@@ -37,4 +40,4 @@ export function CategoryView({ assets, category }: ICategoryViewProps) {
       </div>
     </div>
   );
-}
+};

@@ -7,11 +7,11 @@ interface ITabNavigationProps {
   onTabChange: (tab: string) => void;
 }
 
-export function TabNavigation({
+export const TabNavigation = ({
   categories,
   activeTab,
   onTabChange,
-}: ITabNavigationProps) {
+}: ITabNavigationProps): JSX.Element => {
   return (
     <div className='bg-base-200/50 backdrop-blur-sm border-b border-primary/20'>
       <div className='px-4'>
@@ -37,4 +37,4 @@ export function TabNavigation({
       </div>
     </div>
   );
-}
+};

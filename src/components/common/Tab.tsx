@@ -24,7 +24,12 @@ interface ITabProps {
   onClick: () => void;
 }
 
-export function Tab({ label, icon, isActive, onClick }: ITabProps) {
+export const Tab = ({
+  label,
+  icon,
+  isActive,
+  onClick,
+}: ITabProps): JSX.Element => {
   const Icon = icons[icon];
 
   return (
@@ -36,4 +41,4 @@ export function Tab({ label, icon, isActive, onClick }: ITabProps) {
       {label}
     </button>
   );
-}
+};
