@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Theme } from 'react-daisyui';
 import { Layout } from './components/Layout';
 import { TabNavigation } from './components/TabNavigation';
-import { SummaryView } from './views/SummaryView';
-import { CategoryView } from './views/CategoryView';
 import { Asset, AssetCategory } from './types';
+import { CategoryView } from './views/CategoryView';
+import { SummaryView } from './views/SummaryView';
 
 const categories: AssetCategory[] = [
   { id: 'crypto', name: 'Cryptocurrency', icon: 'Coins' },
   { id: 'stocks', name: 'Stocks', icon: 'LineChart' },
   { id: 'real-estate', name: 'Real Estate', icon: 'Home' },
   { id: 'bonds', name: 'Bonds', icon: 'Landmark' },
-  { id: 'cash', name: 'Cash', icon: 'Banknote' }
+  { id: 'cash', name: 'Cash', icon: 'Banknote' },
 ];
 
 const initialAssets: Asset[] = [
@@ -26,9 +27,9 @@ const initialAssets: Asset[] = [
     apy: 0,
     targetAllocation: 30,
     currentAllocation: 34.16,
-    sharePrice: 57242.00,
+    sharePrice: 57242.0,
     quantity: 0.00359428,
-    valueCAD: 384173.08
+    valueCAD: 384173.08,
   },
   {
     id: 2,
@@ -44,7 +45,7 @@ const initialAssets: Asset[] = [
     currentAllocation: 35.84,
     sharePrice: 245.32,
     quantity: 150,
-    valueCAD: 402123.45
+    valueCAD: 402123.45,
   },
   {
     id: 3,
@@ -60,8 +61,8 @@ const initialAssets: Asset[] = [
     currentAllocation: 18.25,
     sharePrice: 84.56,
     quantity: 200,
-    valueCAD: 204678.90
-  }
+    valueCAD: 204678.9,
+  },
 ];
 
 function App() {
@@ -69,23 +70,25 @@ function App() {
   const [assets] = useState<Asset[]>(initialAssets);
 
   return (
-    <Layout>
-      <TabNavigation 
-        categories={categories}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-      />
-      <div className="p-6">
-        {activeTab === 'summary' ? (
-          <SummaryView assets={assets} />
-        ) : (
-          <CategoryView 
-            assets={assets.filter(asset => asset.category === activeTab)}
-            category={categories.find(cat => cat.id === activeTab)!}
-          />
-        )}
-      </div>
-    </Layout>
+    <Theme dataTheme='cyberpunk'>
+      <Layout>
+        <TabNavigation
+          categories={categories}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+        />
+        <div className='p-6'>
+          {activeTab === 'summary' ? (
+            <SummaryView assets={assets} />
+          ) : (
+            <CategoryView
+              assets={assets.filter((asset) => asset.category === activeTab)}
+              category={categories.find((cat) => cat.id === activeTab)!}
+            />
+          )}
+        </div>
+      </Layout>
+    </Theme>
   );
 }
 
