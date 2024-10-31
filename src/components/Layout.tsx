@@ -10,7 +10,7 @@ export const Layout = ({ children }: ILayoutProps): JSX.Element => {
   return (
     <div className="min-h-screen bg-base-100">
       <div className="max-w-[1600px] mx-auto">
-        <Navbar className="bg-base-200/50 backdrop-blur-sm border-b border-primary/20">
+        <Navbar className="bg-base-200/50 backdrop-blur-sm border-b border-primary/20 sticky top-0 z-10">
           <div className="flex-1">
             <div className="dropdown">
               <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -64,7 +64,7 @@ export const Layout = ({ children }: ILayoutProps): JSX.Element => {
             </div>
           </div>
         </Navbar>
-        <main className="min-h-[calc(100vh-4rem)]">{children}</main>
+        <main className="min-h-[calc(100vh-4rem)] p-6">{children}</main>
       </div>
     </div>
   );

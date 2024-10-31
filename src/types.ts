@@ -29,10 +29,20 @@ export interface ITabItem {
   icon: IconType;
 }
 
+export interface IHistoricalData {
+  value: number;
+  timestamp: string;
+}
+
 export interface IPortfolioStats {
   totalValueCAD: number;
   totalValueBRL: number;
   passiveIncome: number;
   globalYield: number;
   totalBTC: number;
+  history: {
+    totalValue: IHistoricalData[];
+    passiveIncome: IHistoricalData[];
+    btc: IHistoricalData[];
+  };
 }

@@ -15,7 +15,7 @@ export const App = (): JSX.Element => {
     <Theme dataTheme="sunset">
       <Layout>
         <TabNavigation categories={categories} activeTab={activeTab} onTabChange={setActiveTab} />
-        <div className="p-6">
+        <main className="flex-1">
           {activeTab === 'summary' ? (
             <SummaryView assets={assets} />
           ) : (
@@ -24,7 +24,7 @@ export const App = (): JSX.Element => {
               category={categories.find(cat => cat.id === activeTab)!}
             />
           )}
-        </div>
+        </main>
       </Layout>
     </Theme>
   );
