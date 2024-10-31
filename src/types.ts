@@ -1,7 +1,9 @@
+import { IconType } from './types/icons';
+
 export interface IAssetCategory {
   id: string;
   name: string;
-  icon: string;
+  icon: IconType;
 }
 
 export interface IAsset {
@@ -24,5 +26,5 @@ export interface IAsset {
 export interface ITabItem {
   id: string;
   label: string;
-  icon: string;
+  icon: IconType;
 }

@@ -6,6 +6,8 @@ import {
   LayoutDashboard,
   LineChart,
 } from 'lucide-react';
+import { JSX } from 'react';
+import { IconType } from '../../types/icons';
 
 const icons = {
   Coins,
@@ -19,7 +21,7 @@ const icons = {
 interface ITabProps {
   id: string;
   label: string;
-  icon: keyof typeof icons;
+  icon: IconType;
   isActive: boolean;
   onClick: () => void;
 }

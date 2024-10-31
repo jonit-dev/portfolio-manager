@@ -1,21 +1,31 @@
+/* eslint-disable import/no-default-export */
 import js from '@eslint/js';
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import typescriptParser from '@typescript-eslint/parser';
 import importPlugin from 'eslint-plugin-import';
+import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
-import typescriptEslint from 'typescript-eslint';
 
 export default [
   {
+    files: ['eslint.config.js'],
+    rules: {
+      'import/no-default-export': 'off',
+    },
+  },
+  {
     files: ['**/*.{js,jsx,ts,tsx}'],
     plugins: {
+      react: reactPlugin,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       import: importPlugin,
       '@typescript-eslint': typescriptEslint,
     },
     languageOptions: {
-      parser: typescriptEslint.parser,
+      parser: typescriptParser,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
@@ -29,8 +39,15 @@ export default [
         ...globals.node,
       },
     },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     rules: {
       ...js.configs.recommended.rules,
+      ...typescriptEslint.configs.recommended.rules,
+      ...reactPlugin.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',
@@ -46,6 +63,8 @@ export default [
       ],
       'import/no-default-export': 'error',
       '@typescript-eslint/explicit-module-boundary-types': 'error',
+      'react/react-in-jsx-scope': 'off', // Not needed with React 17+
+      'react/jsx-uses-react': 'off', // Not needed with React 17+
     },
   },
 ];

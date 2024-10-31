@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { JSX, useState } from 'react';
 import { Theme } from 'react-daisyui';
 import { Layout } from './components/Layout';
 import { TabNavigation } from './components/TabNavigation';

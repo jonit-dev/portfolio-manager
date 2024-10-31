@@ -1,10 +1,11 @@
+import { JSX } from 'react';
 import { IAsset } from '../types';
 
 interface IAssetsTableProps {
   assets: IAsset[];
 }
 
-export function AssetsTable({ assets }: IAssetsTableProps) {
+export function AssetsTable({ assets }: IAssetsTableProps): JSX.Element {
   return (
     <div className='overflow-x-auto'>
       <table className='table table-zebra w-full'>

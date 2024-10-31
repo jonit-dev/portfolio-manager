@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import { IAssetCategory } from '../types';
 import { Tab } from './common/Tab';
 
@@ -28,7 +29,7 @@ export const TabNavigation = ({
               key={category.id}
               id={category.id}
               label={category.name}
-              icon={category.icon as any} // TODO: Type this properly
+              icon={category.icon}
               isActive={activeTab === category.id}
               onClick={() => onTabChange(category.id)}
             />

@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import { AllocationChart } from '../components/AllocationChart';
 import { AssetTable } from '../components/AssetTable';
 import { Card } from '../components/common/Card';

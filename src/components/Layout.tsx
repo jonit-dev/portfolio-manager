@@ -6,7 +6,7 @@ import {
   Menu as MenuIcon,
   Settings,
 } from 'lucide-react';
-import React from 'react';
+import React, { JSX } from 'react';
 import { Avatar, Navbar } from 'react-daisyui';
 
 interface ILayoutProps {

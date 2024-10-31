@@ -1,3 +1,5 @@
+/* eslint-disable import/no-default-export */
+/* eslint-disable @typescript-eslint/no-require-imports */
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [

@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import { AllocationCharts } from '../components/AllocationCharts';
 import { AssetsTable } from '../components/AssetsTable';
 import { Card } from '../components/common/Card';
@@ -32,15 +33,11 @@ export const SummaryView = ({ assets }: ISummaryViewProps): JSX.Element => {
         </div>
       </div>
 
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-        <Card title='Portfolio Allocation' className='lg:col-span-1'>
-          <AllocationCharts assets={assets} />
-        </Card>
+      <AllocationCharts assets={assets} />
 
-        <Card title='Assets Overview' className='lg:col-span-2'>
-          <AssetsTable assets={assets} />
-        </Card>
-      </div>
+      <Card title='Assets Overview' className='w-full'>
+        <AssetsTable assets={assets} />
+      </Card>
     </div>
   );
 };
