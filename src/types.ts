@@ -1,12 +1,10 @@
-export interface PortfolioStats {
-  totalValueCAD: number;
-  totalValueBRL: number;
-  passiveIncome: number;
-  globalYield: number;
-  totalBTC: number;
+export interface IAssetCategory {
+  id: string;
+  name: string;
+  icon: string;
 }
 
-export interface Asset {
+export interface IAsset {
   id: number;
   category: string;
   asset: string;
@@ -18,13 +16,13 @@ export interface Asset {
   apy: number;
   targetAllocation: number;
   currentAllocation: number;
-  sharePrice?: number;
-  quantity?: number;
+  sharePrice: number;
+  quantity: number;
   valueCAD: number;
 }
 
-export interface AssetCategory {
+export interface ITabItem {
   id: string;
-  name: string;
+  label: string;
   icon: string;
 }

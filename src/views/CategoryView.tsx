@@ -1,44 +1,39 @@
-import React from 'react';
-import { Asset, AssetCategory } from '../types';
-import { StatsCard } from '../components/StatsCard';
-import { DollarSign, TrendingUp } from 'lucide-react';
-import { AssetsTable } from '../components/AssetsTable';
+import { AllocationChart } from '../components/AllocationChart';
+import { AssetTable } from '../components/AssetTable';
+import { Card } from '../components/common/Card';
+import { IAsset, IAssetCategory } from '../types';
 
-interface Props {
-  assets: Asset[];
-  category: AssetCategory;
+interface ICategoryViewProps {
+  assets: IAsset[];
+  category: IAssetCategory;
 }
 
-export function CategoryView({ assets, category }: Props) {
+export function CategoryView({ assets, category }: ICategoryViewProps) {
   const totalValue = assets.reduce((sum, asset) => sum + asset.valueCAD, 0);
-  const avgYield = assets.reduce((sum, asset) => sum + asset.apy, 0) / assets.length || 0;
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <StatsCard
-          title={`Total ${category.name} Value`}
-          value={`CA$${totalValue.toLocaleString()}`}
-          icon={<DollarSign className="w-5 h-5" />}
-          trend="+8.3% this month"
-          trendUp={true}
-        />
-        <StatsCard
-          title="Average Yield"
-          value={`${avgYield.toFixed(2)}%`}
-          icon={<TrendingUp className="w-5 h-5" />}
-          trend="Based on current rates"
-        />
-        <StatsCard
-          title="Total Assets"
-          value={assets.length.toString()}
-          icon={<DollarSign className="w-5 h-5" />}
-          trend={`in ${category.name}`}
-        />
+    <div className='space-y-6'>
+      <div className='stats shadow bg-base-200 w-full'>
+        <div className='stat'>
+          <div className='stat-title'>{category.name} Total Value</div>
+          <div className='stat-value text-primary'>
+            ${totalValue.toLocaleString()}
+          </div>
+        </div>
+        <div className='stat'>
+          <div className='stat-title'>Number of Assets</div>
+          <div className='stat-value text-primary'>{assets.length}</div>
+        </div>
       </div>
 
-      <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700">
-        <AssetsTable assets={assets} />
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+        <Card title='Category Allocation' className='lg:col-span-1'>
+          <AllocationChart assets={assets} />
+        </Card>
+
+        <Card title={`Assets in ${category.name}`} className='lg:col-span-2'>
+          <AssetTable assets={assets} />
+        </Card>
       </div>
     </div>
   );

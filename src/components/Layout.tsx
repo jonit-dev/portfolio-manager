@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
+import React from 'react';
 import { Navbar } from 'react-daisyui';
 
-interface Props {
-  children: ReactNode;
+interface ILayoutProps {
+  children: React.ReactNode;
 }
 
-export function Layout({ children }: Props) {
+export function Layout({ children }: ILayoutProps) {
   return (
     <div className='min-h-screen bg-base-100'>
       <div className='max-w-[1600px] mx-auto'>
