@@ -10,15 +10,15 @@ export const Layout = ({ children }: ILayoutProps): JSX.Element => {
   return (
     <div className="min-h-screen bg-base-100">
       <div className="max-w-[1600px] mx-auto">
-        <Navbar className="bg-base-200/50 backdrop-blur-sm border-b border-primary/20 sticky top-0 z-10">
+        <Navbar className="bg-base-200/50 backdrop-blur-sm border-b border-primary/20 sticky top-0 z-[100] relative">
           <div className="flex-1">
-            <div className="dropdown">
+            <div className="dropdown relative">
               <label tabIndex={0} className="btn btn-ghost lg:hidden">
                 <MenuIcon className="h-5 w-5" />
               </label>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52"
+                className="menu menu-sm dropdown-content mt-3 z-[999] p-2 shadow bg-base-200 rounded-box w-52"
               >
                 <NavMenuItems />
               </ul>
@@ -33,7 +33,7 @@ export const Layout = ({ children }: ILayoutProps): JSX.Element => {
               </ul>
             </div>
 
-            <div className="dropdown dropdown-end">
+            <div className="dropdown dropdown-end relative">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <Avatar
                   src="https://api.dicebear.com/7.x/avataaars/svg?seed=portfolio"
@@ -43,7 +43,7 @@ export const Layout = ({ children }: ILayoutProps): JSX.Element => {
               </label>
               <ul
                 tabIndex={0}
-                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-200 rounded-box w-52"
+                className="mt-3 z-[999] p-2 shadow menu menu-sm dropdown-content bg-base-200 rounded-box w-52"
               >
                 <li>
                   <a>
