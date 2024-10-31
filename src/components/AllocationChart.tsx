@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import {
   Cell,
   Legend,
@@ -12,7 +13,16 @@ interface IAllocationChartProps {
   assets: IAsset[];
 }
 
-export function AllocationChart({ assets }: IAllocationChartProps) {
+interface IChartData {
+  name: string;
+  category: string;
+  value: number;
+  targetValue: number;
+}
+
+export function AllocationChart({
+  assets,
+}: IAllocationChartProps): JSX.Element {
   const COLORS = {
     crypto: '#4ade80', // primary (mint green)
     stocks: '#ea580c', // orange
@@ -72,7 +82,7 @@ export function AllocationChart({ assets }: IAllocationChartProps) {
           <Tooltip
             content={({ active, payload }) => {
               if (active && payload && payload.length) {
-                const data = payload[0].payload;
+                const data = payload[0].payload as IChartData;
                 return (
                   <div className='bg-base-200 p-2 rounded-lg shadow-lg border border-base-300'>
                     <p className='font-medium'>{data.name}</p>
@@ -89,7 +99,7 @@ export function AllocationChart({ assets }: IAllocationChartProps) {
           <Legend
             verticalAlign='bottom'
             height={36}
-            formatter={(value, entry: any) => (
+            formatter={(value: string) => (
               <span className='text-base-content'>{value}</span>
             )}
           />

@@ -28,3 +28,11 @@ export interface ITabItem {
   label: string;
   icon: IconType;
 }
+
+export interface IPortfolioStats {
+  totalValueCAD: number;
+  totalValueBRL: number;
+  passiveIncome: number;
+  globalYield: number;
+  totalBTC: number;
+}
