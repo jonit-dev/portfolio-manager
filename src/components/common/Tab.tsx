@@ -23,9 +23,16 @@ export const Tab = ({ label, icon, isActive, onClick }: ITabProps): JSX.Element 
   const Icon = icons[icon];
 
   return (
-    <button className={`tab gap-2 ${isActive ? 'tab-active' : ''}`} onClick={onClick}>
+    <button
+      className={`
+        tab flex-1 gap-1.5 px-3 py-2 min-h-0 h-auto text-sm transition-colors duration-200
+        hover:bg-primary/10 
+        ${isActive ? 'tab-active text-primary font-medium' : 'text-base-content/70'}
+      `}
+      onClick={onClick}
+    >
       <Icon className="w-4 h-4" />
-      {label}
+      <span className="whitespace-nowrap">{label}</span>
     </button>
   );
 };
