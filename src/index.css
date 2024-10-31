@@ -7,5 +7,5 @@
 }
 
 body {
-  @apply bg-cyber-black text-gray-100;
+  @apply bg-base-100 text-base-content;
 }
