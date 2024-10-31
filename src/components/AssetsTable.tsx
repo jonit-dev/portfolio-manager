@@ -7,8 +7,8 @@ interface IAssetsTableProps {
 
 export function AssetsTable({ assets }: IAssetsTableProps): JSX.Element {
   return (
-    <div className='overflow-x-auto'>
-      <table className='table table-zebra w-full'>
+    <div className="overflow-x-auto">
+      <table className="table table-zebra w-full">
         <thead>
           <tr>
             <th>Asset</th>
@@ -19,7 +19,7 @@ export function AssetsTable({ assets }: IAssetsTableProps): JSX.Element {
           </tr>
         </thead>
         <tbody>
-          {assets.map((asset) => (
+          {assets.map(asset => (
             <tr key={asset.id}>
               <td>{asset.asset}</td>
               <td>{asset.category}</td>

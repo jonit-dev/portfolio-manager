@@ -12,20 +12,16 @@ export const App = (): JSX.Element => {
   const [assets] = useState<IAsset[]>(initialAssets);
 
   return (
-    <Theme dataTheme='sunset'>
+    <Theme dataTheme="sunset">
       <Layout>
-        <TabNavigation
-          categories={categories}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-        />
-        <div className='p-6'>
+        <TabNavigation categories={categories} activeTab={activeTab} onTabChange={setActiveTab} />
+        <div className="p-6">
           {activeTab === 'summary' ? (
             <SummaryView assets={assets} />
           ) : (
             <CategoryView
-              assets={assets.filter((asset) => asset.category === activeTab)}
-              category={categories.find((cat) => cat.id === activeTab)!}
+              assets={assets.filter(asset => asset.category === activeTab)}
+              category={categories.find(cat => cat.id === activeTab)!}
             />
           )}
         </div>

@@ -14,17 +14,17 @@ export const TabNavigation = ({
   onTabChange,
 }: ITabNavigationProps): JSX.Element => {
   return (
-    <div className='bg-base-200/50 backdrop-blur-sm border-b border-primary/20'>
-      <div className='px-4'>
-        <div className='tabs tabs-boxed bg-base-200/50'>
+    <div className="bg-base-200/50 backdrop-blur-sm border-b border-primary/20">
+      <div className="px-4">
+        <div className="tabs tabs-boxed bg-base-200/50">
           <Tab
-            id='summary'
-            label='Summary'
-            icon='LayoutDashboard'
+            id="summary"
+            label="Summary"
+            icon="LayoutDashboard"
             isActive={activeTab === 'summary'}
             onClick={() => onTabChange('summary')}
           />
-          {categories.map((category) => (
+          {categories.map(category => (
             <Tab
               key={category.id}
               id={category.id}
