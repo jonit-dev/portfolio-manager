@@ -1,1 +1,1 @@
-yarn lint --silent && yarn tsc --silent
+yarn format && yarn lint && yarn tsc

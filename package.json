@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\" && eslint . --fix",
+    "format": "prettier --write --log-level silent \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "lint": "eslint . --fix",
     "preview": "vite preview",
     "tsc": "tsc --noEmit",
     "prepare": "husky"
