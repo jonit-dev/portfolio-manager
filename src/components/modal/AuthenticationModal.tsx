@@ -1,6 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import { Button } from 'react-daisyui';
-import { FaFacebook, FaGoogle } from 'react-icons/fa';
+import { InputField } from '../form/InputField';
+import { SocialLoginButton } from '../form/SocialLoginButton';
 import { Modal } from './Modal';
 import { useModalStore } from './store/modalStore';
 
@@ -20,10 +21,10 @@ export const AuthenticationModal: React.FC = () => {
     <div className="font-sans">
       <Button onClick={handleOpenModal}>Open Authentication Modal</Button>
       <Modal ref={modalRef} title="Authentication" onClose={close} isOpen={isOpen}>
-        <div className="flex flex-col space-y-4 p-6">
-          <p className="text-center">Sign in to your account to continue</p>
-          <input type="email" placeholder="Email address" className="input w-full p-2 mb-4" />
-          <input type="password" placeholder="Password" className="input w-full p-2 mb-4" />
+        <div className="flex flex-col space-y-6 p-6">
+          <p className="text-center text-gray-500">Sign in to your account to continue</p>
+          <InputField type="email" placeholder="Email address" className="w-full" />
+          <InputField type="password" placeholder="Password" className="w-full" />
           <Button
             onClick={() => console.log('Continue clicked')}
             className="btn-primary w-full p-2"
@@ -32,18 +33,14 @@ export const AuthenticationModal: React.FC = () => {
           </Button>
           <p className="text-center">or</p>
           <div className="flex flex-col space-y-2">
-            <Button
+            <SocialLoginButton
+              provider="facebook"
               onClick={() => console.log('Continue with Facebook clicked')}
-              className="flex items-center w-full p-2"
-            >
-              <FaFacebook className="mr-2" /> Continue with Facebook
-            </Button>
-            <Button
+            />
+            <SocialLoginButton
+              provider="google"
               onClick={() => console.log('Continue with Google clicked')}
-              className="flex items-center w-full p-2"
-            >
-              <FaGoogle className="mr-2" /> Continue with Google
-            </Button>
+            />
           </div>
           <a href="#" className="text-blue-500 text-center">
             Forgot password?
