@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Avatar, Button } from 'react-daisyui';
-import { useModalStore } from '../modal/store/modalStore';
+import { useModalStore } from '../../store/modalStore';
 
 const MODAL_ID = 'authenticationModal';
 
