@@ -28,6 +28,12 @@ const ModalActions: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 export const Modal = forwardRef<HTMLDialogElement, IModalProps>(({ title, children }, ref) => {
   const { close } = useModalStore();
 
+  const handleClose = (event: React.MouseEvent) => {
+    event.preventDefault();
+    (ref as React.RefObject<HTMLDialogElement>).current?.close();
+    close();
+  };
+
   return (
     <dialog ref={ref} className="modal">
       <div className="modal-box">
@@ -35,14 +41,16 @@ export const Modal = forwardRef<HTMLDialogElement, IModalProps>(({ title, childr
         {children}
         <ModalActions>
           <form method="dialog">
-            <button className="btn btn-error" onClick={close}>
+            <button type="button" className="btn btn-error" onClick={handleClose}>
               Close
             </button>
           </form>
         </ModalActions>
       </div>
-      <form method="dialog" className="modal-backdrop" onClick={close}>
-        <button>close</button>
+      <form method="dialog" className="modal-backdrop" onClick={handleClose}>
+        <button type="button" className="btn">
+          Close
+        </button>
       </form>
     </dialog>
   );
