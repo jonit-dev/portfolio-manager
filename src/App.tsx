@@ -1,7 +1,7 @@
 import { JSX, useState } from 'react';
 import { Theme } from 'react-daisyui';
-import { AuthenticationModal } from './components/AuthenticationModal';
 import { Layout } from './components/Layout';
+import { AuthenticationModal } from './components/modal/AuthenticationModal';
 import { TabNavigation } from './components/TabNavigation';
 import { categories, initialAssets } from './mocks/data';
 import { IAsset } from './types';

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useModalStore } from '../store/modal';
+import { useModalStore } from '../../store/modal';
 import { Modal } from './Modal';
 
 export const AuthenticationModal: React.FC = () => {

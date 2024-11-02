@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { useModalStore } from '../store/modal';
+import { useModalStore } from '../../store/modal';
 
 interface IModalProps {
   title: string;
