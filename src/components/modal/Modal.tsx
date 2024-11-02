@@ -5,11 +5,12 @@ interface IModalProps {
   title: string;
   children: React.ReactNode;
   onClose: () => void;
-  isOpen: boolean; // Added isOpen prop
+  isOpen: boolean;
+  showCloseButton?: boolean;
 }
 
 export const Modal = forwardRef<HTMLDialogElement, IModalProps>(
-  ({ title, children, onClose, isOpen }, ref) => {
+  ({ title, children, onClose, isOpen, showCloseButton = true }, ref) => {
     useEffect(() => {
       const dialogRef = ref as React.RefObject<HTMLDialogElement>;
       if (dialogRef.current) {
@@ -27,12 +28,20 @@ export const Modal = forwardRef<HTMLDialogElement, IModalProps>(
 
     return (
       <DaisyModal ref={ref} onClose={onClose} onClick={handleBackdropClick}>
-        <DaisyModal.Header className="font-bold text-center mb-2">{title}</DaisyModal.Header>
+        <DaisyModal.Header className="font-bold text-center mb-2">
+          {title}
+
+          <button className="btn btn-sm btn-circle absolute right-2 top-2" onClick={onClose}>
+            ✕
+          </button>
+        </DaisyModal.Header>
         <DaisyModal.Body>{children}</DaisyModal.Body>
         <DaisyModal.Actions>
-          <button className="btn" onClick={onClose}>
-            Close
-          </button>
+          {showCloseButton && (
+            <button className="btn" onClick={onClose}>
+              Close
+            </button>
+          )}
         </DaisyModal.Actions>
       </DaisyModal>
     );

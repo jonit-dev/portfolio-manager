@@ -15,7 +15,13 @@ export const AuthenticationModal: React.FC = () => {
 
   return (
     <div className="font-sans">
-      <Modal ref={modalRef} title="Authentication" onClose={close} isOpen={isOpen}>
+      <Modal
+        ref={modalRef}
+        title="Authentication"
+        onClose={close}
+        isOpen={isOpen}
+        showCloseButton={false}
+      >
         <div className="flex flex-col space-y-6 p-6">
           <p className="text-center text-gray-500">Sign in to your account to continue</p>
           <InputField type="email" placeholder="Email address" className="w-full" />
