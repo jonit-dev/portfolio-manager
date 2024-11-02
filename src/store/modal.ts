@@ -29,13 +29,13 @@ const store = create<IModalStore>(set => ({
   },
 }));
 
+// log state changes
+store.subscribe(state => {
+  console.log('Modal state changed:', state);
+});
+
 export const useModalStore = (): IModalStore => {
   const state = store.getState();
-
-  // log state changes
-  store.subscribe(state => {
-    console.log('Modal state changed:', state);
-  });
 
   return {
     isOpen: state.isOpen,
