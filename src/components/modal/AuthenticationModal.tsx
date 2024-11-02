@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Button } from 'react-daisyui';
 import { InputField } from '../form/InputField';
 import { SocialLoginButton } from '../form/SocialLoginButton';
@@ -8,18 +8,13 @@ import { useModalStore } from './store/modalStore';
 const MODAL_ID = 'authenticationModal';
 
 export const AuthenticationModal: React.FC = () => {
-  const { open, close, isModalOpen } = useModalStore();
+  const { close, isModalOpen } = useModalStore();
   const modalRef = useRef<HTMLDialogElement>(null);
-
-  const handleOpenModal = useCallback(() => {
-    open(MODAL_ID, 'Authentication', 'Authentication Placeholder');
-  }, [open]);
 
   const isOpen = isModalOpen(MODAL_ID);
 
   return (
     <div className="font-sans">
-      <Button onClick={handleOpenModal}>Open Authentication Modal</Button>
       <Modal ref={modalRef} title="Authentication" onClose={close} isOpen={isOpen}>
         <div className="flex flex-col space-y-6 p-6">
           <p className="text-center text-gray-500">Sign in to your account to continue</p>
