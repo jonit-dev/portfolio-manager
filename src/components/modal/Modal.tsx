@@ -23,9 +23,7 @@ export const Modal = forwardRef<HTMLDialogElement, IModalProps>(
 
     return (
       <DaisyModal ref={ref} onClose={onClose}>
-        {' '}
-        {/* Removed open prop */}
-        <DaisyModal.Header className="font-bold">{title}</DaisyModal.Header>
+        <DaisyModal.Header className="font-bold text-center mb-2">{title}</DaisyModal.Header>
         <DaisyModal.Body>{children}</DaisyModal.Body>
         <DaisyModal.Actions>
           <button className="btn" onClick={onClose}>
