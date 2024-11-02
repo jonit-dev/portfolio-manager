@@ -1,63 +1,40 @@
-import React, { forwardRef } from 'react';
-import { useModalStore } from '../../store/modal';
+import React, { forwardRef, useEffect } from 'react';
+import { Modal as DaisyModal } from 'react-daisyui';
 
 interface IModalProps {
   title: string;
   children: React.ReactNode;
+  onClose: () => void;
+  isOpen: boolean; // Added isOpen prop
 }
 
-interface IModalComponent
-  extends React.ForwardRefExoticComponent<IModalProps & React.RefAttributes<HTMLDialogElement>> {
-  Header: React.FC<{ children: React.ReactNode }>;
-  Body: React.FC<{ children: React.ReactNode }>;
-  Actions: React.FC<{ children: React.ReactNode }>;
-}
+export const Modal = forwardRef<HTMLDialogElement, IModalProps>(
+  ({ title, children, onClose, isOpen }, ref) => {
+    useEffect(() => {
+      const dialogRef = ref as React.RefObject<HTMLDialogElement>;
+      if (dialogRef.current) {
+        if (isOpen) {
+          dialogRef.current.showModal(); // Show modal when isOpen is true
+        } else {
+          dialogRef.current.close(); // Close modal when isOpen is false
+        }
+      }
+    }, [isOpen, ref]);
 
-const ModalHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="font-bold text-lg">{children}</div>
+    return (
+      <DaisyModal ref={ref} onClose={onClose}>
+        {' '}
+        {/* Removed open prop */}
+        <DaisyModal.Header className="font-bold">{title}</DaisyModal.Header>
+        <DaisyModal.Body>{children}</DaisyModal.Body>
+        <DaisyModal.Actions>
+          <button className="btn" onClick={onClose}>
+            Close
+          </button>
+        </DaisyModal.Actions>
+      </DaisyModal>
+    );
+  }
 );
-
-const ModalBody: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="py-4">{children}</div>
-);
-
-const ModalActions: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="modal-action">{children}</div>
-);
-
-export const Modal = forwardRef<HTMLDialogElement, IModalProps>(({ title, children }, ref) => {
-  const { close } = useModalStore();
-
-  const handleClose = (event: React.MouseEvent) => {
-    event.preventDefault();
-    (ref as React.RefObject<HTMLDialogElement>).current?.close();
-    close();
-  };
-
-  return (
-    <dialog ref={ref} className="modal">
-      <div className="modal-box">
-        {title && <ModalHeader>{title}</ModalHeader>}
-        {children}
-        <ModalActions>
-          <form method="dialog">
-            <button type="button" className="btn btn-error" onClick={handleClose}>
-              Close
-            </button>
-          </form>
-        </ModalActions>
-      </div>
-      <form method="dialog" className="modal-backdrop" onClick={handleClose}>
-        <button type="button" className="btn">
-          Close
-        </button>
-      </form>
-    </dialog>
-  );
-}) as IModalComponent;
-
-Modal.Header = ModalHeader;
-Modal.Body = ModalBody;
-Modal.Actions = ModalActions;
 
 Modal.displayName = 'Modal';
