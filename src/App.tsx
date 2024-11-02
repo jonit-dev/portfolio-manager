@@ -1,5 +1,6 @@
 import { JSX, useState } from 'react';
 import { Theme } from 'react-daisyui';
+import { AuthenticationModal } from './components/AuthenticationModal';
 import { Layout } from './components/Layout';
 import { TabNavigation } from './components/TabNavigation';
 import { categories, initialAssets } from './mocks/data';
@@ -14,6 +15,7 @@ export const App = (): JSX.Element => {
   return (
     <Theme dataTheme="sunset">
       <Layout>
+        <AuthenticationModal />
         <TabNavigation categories={categories} activeTab={activeTab} onTabChange={setActiveTab} />
         <main className="flex-1">
           {activeTab === 'summary' ? (

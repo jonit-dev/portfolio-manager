@@ -1,22 +1,35 @@
 import { create } from './createStore';
-import { devtools } from './middleware';
 
 interface IModalState {
   isOpen: boolean;
   content: string | null;
   title: string | null;
+}
+
+interface IModalStore extends IModalState {
   open: (title: string, content: string) => void;
   close: () => void;
 }
 
-export const useModalStore = create<IModalState>(set => {
-  const store = {
-    isOpen: false,
-    content: null,
-    title: null,
-    open: (title: string, content: string) => set(() => ({ isOpen: true, content, title })),
-    close: () => set(() => ({ isOpen: false, content: null, title: null })),
-  };
+const initialState: IModalState = {
+  isOpen: false,
+  content: null,
+  title: null,
+};
 
-  return devtools(create(() => store)).getState();
-});
+const store = create<IModalStore>(set => ({
+  ...initialState,
+  open: (title: string, content: string) => set(() => ({ isOpen: true, content, title })),
+  close: () => set(() => ({ isOpen: false, content: null, title: null })),
+}));
+
+export const useModalStore = (): IModalStore => {
+  const state = store.getState();
+  return {
+    isOpen: state.isOpen,
+    content: state.content,
+    title: state.title,
+    open: state.open,
+    close: state.close,
+  };
+};
