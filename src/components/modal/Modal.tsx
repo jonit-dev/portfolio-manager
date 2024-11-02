@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from 'react';
+import React, { forwardRef, useCallback, useEffect } from 'react';
 import { Modal as DaisyModal } from 'react-daisyui';
 
 interface IModalProps {
@@ -21,8 +21,12 @@ export const Modal = forwardRef<HTMLDialogElement, IModalProps>(
       }
     }, [isOpen, ref]);
 
+    const handleBackdropClick = useCallback(() => {
+      onClose();
+    }, [onClose]);
+
     return (
-      <DaisyModal ref={ref} onClose={onClose}>
+      <DaisyModal ref={ref} onClose={onClose} onClick={handleBackdropClick}>
         <DaisyModal.Header className="font-bold text-center mb-2">{title}</DaisyModal.Header>
         <DaisyModal.Body>{children}</DaisyModal.Body>
         <DaisyModal.Actions>
