@@ -1,7 +1,7 @@
 import { DollarSign, TrendingUp, Wallet } from 'lucide-react';
 import { JSX } from 'react';
-import { IPortfolioStats } from '../types';
-import { Sparkline } from './common/Sparkline';
+import { IPortfolioStats } from '../../types';
+import { Sparkline } from '../common/Sparkline';
 
 interface IProps {
   stats: IPortfolioStats;

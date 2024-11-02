@@ -1,8 +1,8 @@
 import { JSX, useState } from 'react';
 import { Theme } from 'react-daisyui';
-import { Layout } from './components/Layout';
+import { Layout } from './components/layout/Layout';
 import { AuthenticationModal } from './components/modal/AuthenticationModal';
-import { TabNavigation } from './components/TabNavigation';
+import { TabNavigation } from './components/navigation/TabNavigation';
 import { categories, initialAssets } from './mocks/data';
 import { IAsset } from './types';
 import { CategoryView } from './views/CategoryView';

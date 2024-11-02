@@ -1,7 +1,7 @@
 import { MoreHorizontal } from 'lucide-react';
 import { JSX, useEffect, useState } from 'react';
-import { IAssetCategory } from '../types';
-import { Tab } from './common/Tab';
+import { IAssetCategory } from '../../types';
+import { Tab } from '../common/Tab';
 
 interface ITabNavigationProps {
   categories: IAssetCategory[];

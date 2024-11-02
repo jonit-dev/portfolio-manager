@@ -1,8 +1,9 @@
 import { JSX } from 'react';
 import { AllocationCharts } from '../components/AllocationCharts';
-import { AssetsTable } from '../components/AssetsTable';
+
 import { Card } from '../components/common/Card';
-import { PortfolioHeader } from '../components/PortfolioHeader';
+import { PortfolioHeader } from '../components/layout/PortfolioHeader';
+import { AssetsTable } from '../components/tables/AssetsTable';
 import { IAsset, IHistoricalData, IPortfolioStats } from '../types';
 
 interface ISummaryViewProps {

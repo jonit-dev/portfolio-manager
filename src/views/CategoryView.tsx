@@ -1,7 +1,7 @@
 import { JSX } from 'react';
 import { AllocationChart } from '../components/AllocationChart';
-import { AssetTable } from '../components/AssetTable';
 import { Card } from '../components/common/Card';
+import { AssetTable } from '../components/tables/AssetTable';
 import { IAsset, IAssetCategory } from '../types';
 
 interface ICategoryViewProps {

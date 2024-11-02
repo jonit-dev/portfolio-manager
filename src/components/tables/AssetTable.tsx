@@ -1,5 +1,5 @@
 import { JSX } from 'react';
-import { IAsset } from '../types';
+import { IAsset } from '../../types';
 
 interface IAssetTableProps {
   assets: IAsset[];
