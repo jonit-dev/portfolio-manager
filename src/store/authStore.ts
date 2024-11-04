@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { supabase } from '../lib/supabase/supabaseClient';
+import { loadingStore } from './loadingStore';
 
 interface IAuthState {
   isAuthenticated: boolean;
@@ -30,47 +31,58 @@ export const useAuthStore = create<IAuthState>((set, get) => ({
   setUser: user => set({ user, isAuthenticated: true }),
   logout: () => set({ user: null, isAuthenticated: false }),
   signInWithEmail: async (email, password) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-    if (data.user) {
-      set({
-        user: {
-          email: data.user.email || '',
-          name: data.user.user_metadata?.name,
-        },
-        isAuthenticated: true,
-        isLoading: false,
-      });
+    try {
+      loadingStore.getState().setLoading(true);
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      if (data.user) {
+        set({
+          user: {
+            email: data.user.email || '',
+            name: data.user.user_metadata?.name,
+          },
+          isAuthenticated: true,
+          isLoading: false,
+        });
+      }
+    } finally {
+      loadingStore.getState().setLoading(false);
     }
   },
   signUpWithEmail: async (email, password) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: window.location.origin,
-      },
-    });
-
-    if (error) throw error;
-
-    if (!data.user?.identities?.length) {
-      throw new Error('An account with this email already exists');
-    }
-
-    if (data.user) {
-      set({
-        user: {
-          email: data.user.email || '',
-          name: data.user.user_metadata?.name,
+    try {
+      loadingStore.getState().setLoading(true);
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: window.location.origin,
         },
-        isAuthenticated: true,
-        isLoading: false,
       });
+
+      if (error) throw error;
+
+      if (!data.user?.identities?.length) {
+        throw new Error('An account with this email already exists');
+      }
+
+      if (data.user) {
+        set({
+          user: {
+            email: data.user.email || '',
+            name: data.user.user_metadata?.name,
+          },
+          isAuthenticated: true,
+          isLoading: false,
+        });
+      }
+    } finally {
+      loadingStore.getState().setLoading(false);
     }
   },
   signOut: async () => {
     try {
+      loadingStore.getState().setLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error && !error.message?.includes('Auth session missing')) {
         throw error;
@@ -79,10 +91,13 @@ export const useAuthStore = create<IAuthState>((set, get) => ({
     } catch (error) {
       set({ user: null, isAuthenticated: false, isLoading: false });
       throw error;
+    } finally {
+      loadingStore.getState().setLoading(false);
     }
   },
   initializeAuth: async () => {
     try {
+      loadingStore.getState().setLoading(true);
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -95,44 +110,60 @@ export const useAuthStore = create<IAuthState>((set, get) => ({
           isAuthenticated: true,
           isLoading: false,
         });
-      } else {
-        set({ isLoading: false });
       }
+      set({ isLoading: false });
     } catch (error) {
       console.error('Error initializing auth:', error);
       set({ isLoading: false });
+    } finally {
+      loadingStore.getState().setLoading(false);
     }
   },
   changePassword: async (currentPassword, newPassword) => {
-    const currentUser = get().user;
-    if (!currentUser?.email) {
-      throw new Error('No authenticated user found');
+    try {
+      loadingStore.getState().setLoading(true);
+      const currentUser = get().user;
+      if (!currentUser?.email) {
+        throw new Error('No authenticated user found');
+      }
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: currentUser.email,
+        password: currentPassword,
+      });
+
+      if (signInError) throw signInError;
+
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (error) throw error;
+    } finally {
+      loadingStore.getState().setLoading(false);
     }
-
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: currentUser.email,
-      password: currentPassword,
-    });
-
-    if (signInError) throw signInError;
-
-    const { error } = await supabase.auth.updateUser({
-      password: newPassword,
-    });
-
-    if (error) throw error;
   },
   resetPassword: async (email: string) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}`,
-    });
-    if (error) throw error;
+    try {
+      loadingStore.getState().setLoading(true);
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}`,
+      });
+      if (error) throw error;
+    } finally {
+      loadingStore.getState().setLoading(false);
+    }
   },
   updatePassword: async (newPassword: string) => {
-    const { error } = await supabase.auth.updateUser({
-      password: newPassword,
-    });
-    if (error) throw error;
+    try {
+      loadingStore.getState().setLoading(true);
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+      if (error) throw error;
+    } finally {
+      loadingStore.getState().setLoading(false);
+    }
   },
 }));
 
