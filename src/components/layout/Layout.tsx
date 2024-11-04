@@ -1,6 +1,7 @@
 import { BarChart2, Home, Menu as MenuIcon, Settings } from 'lucide-react';
 import React, { JSX } from 'react';
 import { Navbar } from 'react-daisyui';
+import { LoadingBackdrop } from '../common/LoadingBackdrop';
 import { NavBar } from '../navigation/NavBar';
 
 interface ILayoutProps {
@@ -10,6 +11,7 @@ interface ILayoutProps {
 export const Layout = ({ children }: ILayoutProps): JSX.Element => {
   return (
     <div className="min-h-screen bg-base-100">
+      <LoadingBackdrop />
       <div className="max-w-[1600px] mx-auto">
         <Navbar className="bg-base-200/50 backdrop-blur-sm border-b border-primary/20 sticky top-0 z-[100] relative">
           <div className="flex-1">
