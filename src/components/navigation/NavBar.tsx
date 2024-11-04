@@ -6,6 +6,8 @@ export const NavBar = (): JSX.Element => {
   const { open } = useModalStore();
   const { isAuthenticated, user, signOut } = useAuthStore();
 
+  console.log('NavBar isAuthenticated:', isAuthenticated); // Log authentication state
+
   const handleAuthClick = () => {
     if (isAuthenticated) {
       signOut();
