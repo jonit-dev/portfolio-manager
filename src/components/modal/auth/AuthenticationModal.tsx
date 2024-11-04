@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { supabase } from '../../../lib/supabase/supabaseClient';
 import { useAuthStore } from '../../../store/authStore';
@@ -27,7 +27,7 @@ export const AuthenticationModal: React.FC = () => {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [isSettingNewPassword, setIsSettingNewPassword] = useState(false);
-  const modalRef = useRef<HTMLDialogElement>(null);
+
   const {
     register,
     handleSubmit,
@@ -128,13 +128,7 @@ export const AuthenticationModal: React.FC = () => {
 
   return (
     <div className="font-sans">
-      <Modal
-        ref={modalRef}
-        title={getModalTitle()}
-        onClose={close}
-        isOpen={isOpen}
-        showCloseButton={false}
-      >
+      <Modal title={getModalTitle()} onClose={close} isOpen={isOpen} showCloseButton={false}>
         {isChangingPassword ? (
           <ChangePasswordForm onSubmit={handleChangePassword} />
         ) : isSettingNewPassword ? (
