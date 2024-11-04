@@ -18,6 +18,7 @@ interface IAuthState {
   initializeAuth: () => Promise<void>;
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  updatePassword: (newPassword: string) => Promise<void>;
 }
 
 export const useAuthStore = create<IAuthState>((set, get) => ({
@@ -69,9 +70,16 @@ export const useAuthStore = create<IAuthState>((set, get) => ({
     }
   },
   signOut: async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
-    set({ user: null, isAuthenticated: false, isLoading: false });
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error && !error.message?.includes('Auth session missing')) {
+        throw error;
+      }
+      set({ user: null, isAuthenticated: false, isLoading: false });
+    } catch (error) {
+      set({ user: null, isAuthenticated: false, isLoading: false });
+      throw error;
+    }
   },
   initializeAuth: async () => {
     try {
@@ -116,7 +124,13 @@ export const useAuthStore = create<IAuthState>((set, get) => ({
   },
   resetPassword: async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin,
+      redirectTo: `${window.location.origin}`,
+    });
+    if (error) throw error;
+  },
+  updatePassword: async (newPassword: string) => {
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
     });
     if (error) throw error;
   },

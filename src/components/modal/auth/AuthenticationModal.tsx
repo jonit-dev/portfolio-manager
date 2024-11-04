@@ -19,7 +19,7 @@ interface IAuthForm {
 }
 
 export const AuthenticationModal: React.FC = () => {
-  const { close, isModalOpen } = useModalStore();
+  const { close, isModalOpen, open } = useModalStore();
   const { signInWithEmail, signUpWithEmail, changePassword, isAuthenticated } = useAuthStore();
   const { showToast } = useToastStore();
   const [isRegistering, setIsRegistering] = useState(false);
@@ -36,23 +36,19 @@ export const AuthenticationModal: React.FC = () => {
   const isOpen = isModalOpen(MODAL_ID);
 
   useEffect(() => {
-    const checkResetPasswordFlow = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (
-        session?.user?.aud === 'authenticated' &&
-        window.location.hash.includes('type=recovery')
-      ) {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(event => {
+      if (event === 'PASSWORD_RECOVERY') {
         setIsSettingNewPassword(true);
+        open(MODAL_ID);
       }
-    };
+    });
 
-    if (isOpen) {
-      checkResetPasswordFlow();
-    }
-  }, [isOpen]);
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [open]);
 
   useEffect(() => {
     if (isOpen && isAuthenticated && !isSettingNewPassword) {
@@ -98,7 +94,7 @@ export const AuthenticationModal: React.FC = () => {
   const handleForgotPassword = async (data: { email: string }) => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
-        redirectTo: `${window.location.origin}#recovery`,
+        redirectTo: `${window.location.origin}`,
       });
       if (error) throw error;
       showToast({ message: 'Password reset link sent! Check your email.', type: 'success' });
