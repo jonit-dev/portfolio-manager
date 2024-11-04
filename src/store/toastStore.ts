@@ -1,34 +1,36 @@
 import { create } from 'zustand';
 
-export enum ToastType {
-  Success = 'success',
-  Error = 'error',
-  Info = 'info',
-}
-
 interface IToast {
+  id?: string;
   message: string;
-  type: ToastType;
-  timeout?: number; // Optional timeout property
+  type: 'success' | 'error' | 'info' | 'warning';
+  duration?: number;
 }
 
-interface IToastState {
+export interface IToastState {
   toasts: IToast[];
-  addToast: (toast: IToast) => void;
-  removeToast: (message: string) => void;
+  showToast: (toast: IToast) => void;
+  removeToast: (id: string) => void;
 }
 
 export const useToastStore = create<IToastState>(set => ({
   toasts: [],
-  addToast: toast => {
-    set(state => ({ toasts: [...state.toasts, toast] }));
+  showToast: (toast: IToast) => {
+    const id = Math.random().toString(36).substring(7);
+    const duration = toast.duration || 3000;
 
-    // Set a timeout to remove the toast after the specified duration
-    const timeout = toast.timeout || 5000; // Default timeout is 5000ms (5 seconds)
+    set(state => ({
+      toasts: [...state.toasts, { ...toast, id }],
+    }));
+
     setTimeout(() => {
-      set(state => ({ toasts: state.toasts.filter(t => t.message !== toast.message) }));
-    }, timeout);
+      set(state => ({
+        toasts: state.toasts.filter(t => t.id !== id),
+      }));
+    }, duration);
   },
-  removeToast: message =>
-    set(state => ({ toasts: state.toasts.filter(t => t.message !== message) })),
+  removeToast: (id: string) =>
+    set(state => ({
+      toasts: state.toasts.filter(toast => toast.id !== id),
+    })),
 }));

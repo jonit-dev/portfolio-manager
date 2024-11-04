@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button } from 'react-daisyui';
 import { useForm } from 'react-hook-form';
 import { useAuthStore } from '../../store/authStore';
 import { useModalStore } from '../../store/modalStore';
+import { useToastStore } from '../../store/toastStore';
 import { InputField } from '../form/InputField';
 import { SocialLoginButton } from '../form/SocialLoginButton';
 import { Modal } from './Modal';
@@ -16,7 +17,9 @@ interface IAuthForm {
 
 export const AuthenticationModal: React.FC = () => {
   const { close, isModalOpen } = useModalStore();
-  const { setUser } = useAuthStore();
+  const { signInWithEmail, signUpWithEmail } = useAuthStore();
+  const { showToast } = useToastStore();
+  const [isRegistering, setIsRegistering] = useState(false);
   const modalRef = useRef<HTMLDialogElement>(null);
   const {
     register,
@@ -26,22 +29,40 @@ export const AuthenticationModal: React.FC = () => {
 
   const isOpen = isModalOpen(MODAL_ID);
 
-  const onSubmit = (data: IAuthForm) => {
-    setUser({ email: data.email });
-    close();
+  const onSubmit = async (data: IAuthForm) => {
+    try {
+      if (isRegistering) {
+        await signUpWithEmail(data.email, data.password);
+        showToast({ message: 'Account created successfully!', type: 'success' });
+      } else {
+        await signInWithEmail(data.email, data.password);
+        showToast({ message: 'Signed in successfully!', type: 'success' });
+      }
+      close();
+    } catch (error) {
+      console.error('Authentication error:', error);
+      showToast({
+        message: error instanceof Error ? error.message : 'Authentication failed',
+        type: 'error',
+      });
+    }
   };
 
   return (
     <div className="font-sans">
       <Modal
         ref={modalRef}
-        title="Authentication"
+        title={isRegistering ? 'Create Account' : 'Sign In'}
         onClose={close}
         isOpen={isOpen}
         showCloseButton={false}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-6 p-6">
-          <p className="text-center text-gray-500">Sign in to your account to continue</p>
+          <p className="text-center text-gray-500">
+            {isRegistering
+              ? 'Create an account to continue'
+              : 'Sign in to your account to continue'}
+          </p>
           <InputField
             {...register('email', {
               required: 'Email is required',
@@ -69,8 +90,17 @@ export const AuthenticationModal: React.FC = () => {
             error={errors.password?.message}
           />
           <Button type="submit" className="btn-primary w-full p-2">
-            Continue
+            {isRegistering ? 'Create Account' : 'Sign In'}
           </Button>
+          <button
+            type="button"
+            onClick={() => setIsRegistering(!isRegistering)}
+            className="text-blue-500 text-center hover:underline"
+          >
+            {isRegistering
+              ? 'Already have an account? Sign in'
+              : "Don't have an account? Create one"}
+          </button>
           <p className="text-center">or</p>
           <div className="flex flex-col space-y-2">
             <SocialLoginButton
@@ -82,9 +112,11 @@ export const AuthenticationModal: React.FC = () => {
               onClick={() => console.log('Continue with Google clicked')}
             />
           </div>
-          <a href="#" className="text-blue-500 text-center">
-            Forgot password?
-          </a>
+          {!isRegistering && (
+            <a href="#" className="text-blue-500 text-center hover:underline">
+              Forgot password?
+            </a>
+          )}
         </form>
       </Modal>
     </div>

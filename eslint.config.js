@@ -37,6 +37,7 @@ export default [
         ...globals.browser,
         ...globals.es2021,
         ...globals.node,
+        JSX: true, // Added this line
       },
     },
     settings: {
@@ -49,10 +50,7 @@ export default [
       ...typescriptEslint.configs.recommended.rules,
       ...reactPlugin.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@typescript-eslint/naming-convention': [
         'error',
         {

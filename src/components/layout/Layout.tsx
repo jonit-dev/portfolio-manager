@@ -8,8 +8,6 @@ interface ILayoutProps {
 }
 
 export const Layout = ({ children }: ILayoutProps): JSX.Element => {
-  const isLoggedIn = false; // Placeholder for actual authentication logic
-
   return (
     <div className="min-h-screen bg-base-100">
       <div className="max-w-[1600px] mx-auto">
@@ -29,7 +27,7 @@ export const Layout = ({ children }: ILayoutProps): JSX.Element => {
             <h1 className="text-2xl font-bold text-primary ml-2">Portfolio Manager</h1>
           </div>
 
-          <NavBar isLoggedIn={isLoggedIn} />
+          <NavBar />
         </Navbar>
         <main className="min-h-[calc(100vh-4rem)] p-6">{children}</main>
       </div>
