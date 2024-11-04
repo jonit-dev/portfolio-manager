@@ -108,24 +108,6 @@ export const AuthenticationModal: React.FC = () => {
     }
   };
 
-  const handleSetNewPassword = async (data: { newPassword: string }) => {
-    try {
-      const { error } = await supabase.auth.updateUser({
-        password: data.newPassword,
-      });
-      if (error) throw error;
-      showToast({ message: 'Password updated successfully!', type: 'success' });
-      setIsSettingNewPassword(false);
-      close();
-    } catch (error) {
-      console.error('Set new password error:', error);
-      showToast({
-        message: error instanceof Error ? error.message : 'Failed to update password',
-        type: 'error',
-      });
-    }
-  };
-
   const handleBackToLogin = () => {
     setIsForgotPassword(false);
     setIsRegistering(false);
@@ -151,7 +133,7 @@ export const AuthenticationModal: React.FC = () => {
         {isChangingPassword ? (
           <ChangePasswordForm onSubmit={handleChangePassword} />
         ) : isSettingNewPassword ? (
-          <ForgotPasswordSetNewPasswordForm onSubmit={handleSetNewPassword} />
+          <ForgotPasswordSetNewPasswordForm />
         ) : isForgotPassword ? (
           <>
             <ForgotPasswordForm onSubmit={handleForgotPassword} />

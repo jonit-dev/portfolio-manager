@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button } from 'react-daisyui';
 import { useForm } from 'react-hook-form';
+import { useForgotPassword } from '../../../hooks/useForgotPassword';
+import { useModalStore } from '../../../store/modalStore';
 import { useToastStore } from '../../../store/toastStore';
 import { InputField } from '../../form/InputField';
 
@@ -9,25 +11,28 @@ interface ISetNewPasswordForm {
   confirmPassword: string;
 }
 
-interface IProps {
-  onSubmit: (data: { newPassword: string }) => void;
-}
-
-export const ForgotPasswordSetNewPasswordForm: React.FC<IProps> = ({ onSubmit }) => {
+export const ForgotPasswordSetNewPasswordForm: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
   } = useForm<ISetNewPasswordForm>();
+  const { setNewPassword } = useForgotPassword();
   const { showToast } = useToastStore();
+  const { close } = useModalStore();
 
   const onSubmitHandler = async (data: ISetNewPasswordForm) => {
-    if (data.newPassword !== data.confirmPassword) {
-      showToast({ message: 'Passwords do not match', type: 'error' });
-      return;
+    try {
+      if (data.newPassword !== data.confirmPassword) {
+        showToast({ message: 'Passwords do not match', type: 'error' });
+        return;
+      }
+      await setNewPassword(data.newPassword);
+      close();
+    } catch (error) {
+      console.error('Error setting new password:', error);
     }
-    await onSubmit({ newPassword: data.newPassword });
   };
 
   return (
