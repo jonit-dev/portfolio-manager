@@ -16,9 +16,10 @@ interface IAuthState {
   signUpWithEmail: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   initializeAuth: () => Promise<void>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
 }
 
-export const useAuthStore = create<IAuthState>(set => ({
+export const useAuthStore = create<IAuthState>((set, get) => ({
   isAuthenticated: false,
   isLoading: true,
   user: null,
@@ -51,7 +52,6 @@ export const useAuthStore = create<IAuthState>(set => ({
 
     if (error) throw error;
 
-    // If user exists but has no identities array, it means the email is already registered
     if (!data.user?.identities?.length) {
       throw new Error('An account with this email already exists');
     }
@@ -93,6 +93,25 @@ export const useAuthStore = create<IAuthState>(set => ({
       console.error('Error initializing auth:', error);
       set({ isLoading: false });
     }
+  },
+  changePassword: async (currentPassword, newPassword) => {
+    const currentUser = get().user;
+    if (!currentUser?.email) {
+      throw new Error('No authenticated user found');
+    }
+
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: currentUser.email,
+      password: currentPassword,
+    });
+
+    if (signInError) throw signInError;
+
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+
+    if (error) throw error;
   },
 }));
 

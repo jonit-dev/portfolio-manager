@@ -24,7 +24,6 @@ export const Layout = ({ children }: ILayoutProps): JSX.Element => {
                 <NavMenuItems />
               </ul>
             </div>
-            <h1 className="text-2xl font-bold text-primary ml-2">Portfolio Manager</h1>
           </div>
 
           <NavBar />
