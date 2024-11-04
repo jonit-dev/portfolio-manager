@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-daisyui';
 import { useForm } from 'react-hook-form';
-import { useForgotPassword } from '../../../hooks/useForgotPassword';
+import { useAuthStore } from '../../../store/authStore';
 import { useToastStore } from '../../../store/toastStore';
 import { InputField } from '../../form/InputField';
 
@@ -21,7 +21,7 @@ export const ForgotPasswordSetNewPasswordForm: React.FC<IProps> = ({ onClose }) 
     formState: { errors },
     watch,
   } = useForm<ISetNewPasswordForm>();
-  const { setNewPassword } = useForgotPassword();
+  const { updatePassword } = useAuthStore();
   const { showToast } = useToastStore();
 
   const onSubmitHandler = async (data: ISetNewPasswordForm) => {
@@ -30,10 +30,15 @@ export const ForgotPasswordSetNewPasswordForm: React.FC<IProps> = ({ onClose }) 
         showToast({ message: 'Passwords do not match', type: 'error' });
         return;
       }
-      await setNewPassword(data.newPassword);
+      await updatePassword(data.newPassword);
+      showToast({ message: 'Password updated successfully!', type: 'success' });
       onClose();
     } catch (error) {
       console.error('Error setting new password:', error);
+      showToast({
+        message: error instanceof Error ? error.message : 'Failed to update password',
+        type: 'error',
+      });
     }
   };
 

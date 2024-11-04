@@ -20,7 +20,8 @@ interface IAuthForm {
 
 export const AuthenticationModal: React.FC = () => {
   const { close: closeModal, isModalOpen, open } = useModalStore();
-  const { signInWithEmail, signUpWithEmail, changePassword, isAuthenticated } = useAuthStore();
+  const { signInWithEmail, signUpWithEmail, changePassword, resetPassword, isAuthenticated } =
+    useAuthStore();
   const { showToast } = useToastStore();
   const [isRegistering, setIsRegistering] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
@@ -100,10 +101,7 @@ export const AuthenticationModal: React.FC = () => {
 
   const handleForgotPassword = async (data: { email: string }) => {
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
-        redirectTo: `${window.location.origin}`,
-      });
-      if (error) throw error;
+      await resetPassword(data.email);
       showToast({ message: 'Password reset link sent! Check your email.', type: 'success' });
       close();
     } catch (error) {
