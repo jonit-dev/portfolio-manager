@@ -15,26 +15,36 @@ export const Modal = forwardRef<HTMLDialogElement, IModalProps>(
       const dialogRef = ref as React.RefObject<HTMLDialogElement>;
       if (dialogRef.current) {
         if (isOpen) {
-          dialogRef.current.showModal(); // Show modal when isOpen is true
+          dialogRef.current.showModal();
         } else {
-          dialogRef.current.close(); // Close modal when isOpen is false
+          dialogRef.current.close();
         }
       }
     }, [isOpen, ref]);
 
     return (
-      <DaisyModal ref={ref} onClose={onClose} backdrop={true}>
-        <DaisyModal.Header className="font-bold text-center mb-2">
+      <DaisyModal
+        ref={ref}
+        onClose={onClose}
+        backdrop={true}
+        aria-labelledby="modal-title"
+        role="dialog"
+      >
+        <DaisyModal.Header className="font-bold text-center mb-2" id="modal-title">
           {title}
 
-          <button className="btn btn-sm btn-circle absolute right-2 top-2" onClick={onClose}>
+          <button
+            className="btn btn-sm btn-circle absolute right-2 top-2"
+            onClick={onClose}
+            aria-label="Close modal"
+          >
             ✕
           </button>
         </DaisyModal.Header>
         <DaisyModal.Body>{children}</DaisyModal.Body>
         <DaisyModal.Actions>
           {showCloseButton && (
-            <button className="btn" onClick={onClose}>
+            <button className="btn" onClick={onClose} aria-label="Close modal">
               Close
             </button>
           )}
