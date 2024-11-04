@@ -1,5 +1,6 @@
 import { JSX, useState } from 'react';
 import { Theme } from 'react-daisyui';
+import { Toast } from './components/common/Toast';
 import { Layout } from './components/layout/Layout';
 import { AuthenticationModal } from './components/modal/AuthenticationModal';
 import { TabNavigation } from './components/navigation/TabNavigation';
@@ -16,6 +17,7 @@ export const App = (): JSX.Element => {
     <Theme dataTheme="sunset">
       <Layout>
         <AuthenticationModal />
+        <Toast />
         <TabNavigation categories={categories} activeTab={activeTab} onTabChange={setActiveTab} />
         <main className="flex-1">
           {activeTab === 'summary' ? (
