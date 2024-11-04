@@ -13,7 +13,7 @@ test.describe('Authentication', () => {
     await loginButton.click();
 
     // Verify login form is displayed using ARIA attributes
-    const modal = page.locator('dialog[role="dialog"][open]');
+    const modal = page.locator('div[role="dialog"]');
     await expect(modal).toBeVisible({ timeout: 10000 });
 
     // Verify the modal title using aria-labelledby

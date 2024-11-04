@@ -1,5 +1,4 @@
-import React, { forwardRef, useEffect } from 'react';
-import { Modal as DaisyModal } from 'react-daisyui';
+import React, { forwardRef } from 'react';
 
 interface IModalProps {
   title: string;
@@ -9,47 +8,39 @@ interface IModalProps {
   showCloseButton?: boolean;
 }
 
-export const Modal = forwardRef<HTMLDialogElement, IModalProps>(
+export const Modal = forwardRef<HTMLDivElement, IModalProps>(
   ({ title, children, onClose, isOpen, showCloseButton = true }, ref) => {
-    useEffect(() => {
-      const dialogRef = ref as React.RefObject<HTMLDialogElement>;
-      if (dialogRef.current) {
-        if (isOpen) {
-          dialogRef.current.showModal();
-        } else {
-          dialogRef.current.close();
-        }
-      }
-    }, [isOpen, ref]);
+    if (!isOpen) return null;
 
     return (
-      <DaisyModal
-        ref={ref}
-        onClose={onClose}
-        backdrop={true}
-        aria-labelledby="modal-title"
-        role="dialog"
-      >
-        <DaisyModal.Header className="font-bold text-center mb-2" id="modal-title">
-          {title}
-
-          <button
-            className="btn btn-sm btn-circle absolute right-2 top-2"
-            onClick={onClose}
-            aria-label="Close modal"
-          >
-            ✕
-          </button>
-        </DaisyModal.Header>
-        <DaisyModal.Body>{children}</DaisyModal.Body>
-        <DaisyModal.Actions>
-          {showCloseButton && (
-            <button className="btn" onClick={onClose} aria-label="Close modal">
-              Close
+      <div className="fixed inset-0 z-[100] flex items-center justify-center">
+        <div className="fixed inset-0 bg-black/50" onClick={onClose} />
+        <div
+          ref={ref}
+          className="modal-box relative w-11/12 max-w-lg z-[101]"
+          role="dialog"
+          aria-labelledby="modal-title"
+        >
+          <div className="font-bold text-center mb-2" id="modal-title">
+            {title}
+            <button
+              className="btn btn-sm btn-circle absolute right-2 top-2"
+              onClick={onClose}
+              aria-label="Close modal"
+            >
+              ✕
             </button>
+          </div>
+          <div className="py-4">{children}</div>
+          {showCloseButton && (
+            <div className="modal-action">
+              <button className="btn" onClick={onClose} aria-label="Close modal">
+                Close
+              </button>
+            </div>
           )}
-        </DaisyModal.Actions>
-      </DaisyModal>
+        </div>
+      </div>
     );
   }
 );
