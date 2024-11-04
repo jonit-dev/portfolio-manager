@@ -1,8 +1,8 @@
 import React, { FormEventHandler } from 'react';
 import { Button } from 'react-daisyui';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
-import { InputField } from '../form/InputField';
-import { SocialLoginButton } from '../form/SocialLoginButton';
+import { InputField } from '../../form/InputField';
+import { SocialLoginButton } from '../../form/SocialLoginButton';
 
 interface IAuthForm {
   email: string;

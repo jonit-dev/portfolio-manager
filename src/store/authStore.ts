@@ -41,8 +41,21 @@ export const useAuthStore = create<IAuthState>(set => ({
     }
   },
   signUpWithEmail: async (email, password) => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: window.location.origin,
+      },
+    });
+
     if (error) throw error;
+
+    // If user exists but has no identities array, it means the email is already registered
+    if (!data.user?.identities?.length) {
+      throw new Error('An account with this email already exists');
+    }
+
     if (data.user) {
       set({
         user: {

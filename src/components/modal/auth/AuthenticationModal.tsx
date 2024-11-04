@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAuthStore } from '../../store/authStore';
-import { useModalStore } from '../../store/modalStore';
-import { useToastStore } from '../../store/toastStore';
+import { useAuthStore } from '../../../store/authStore';
+import { useModalStore } from '../../../store/modalStore';
+import { useToastStore } from '../../../store/toastStore';
+import { Modal } from '../Modal';
 import { LoginForm } from './LoginForm';
-import { Modal } from './Modal';
 import { RegisterForm } from './RegisterForm';
 
 const MODAL_ID = 'authenticationModal';
