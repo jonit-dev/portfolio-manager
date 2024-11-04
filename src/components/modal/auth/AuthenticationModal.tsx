@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { supabase } from '../../../lib/supabase/supabaseClient';
 import { useAuthStore } from '../../../store/authStore';
 import { useModalStore } from '../../../store/modalStore';
 import { useToastStore } from '../../../store/toastStore';
 import { Modal } from '../Modal';
 import { ChangePasswordForm } from './ChangePasswordForm';
 import { ForgotPasswordForm } from './ForgotPasswordForm';
+import { ForgotPasswordSetNewPasswordForm } from './ForgotPasswordSetNewPasswordForm';
 import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
 
@@ -18,12 +20,12 @@ interface IAuthForm {
 
 export const AuthenticationModal: React.FC = () => {
   const { close, isModalOpen } = useModalStore();
-  const { signInWithEmail, signUpWithEmail, changePassword, resetPassword, isAuthenticated } =
-    useAuthStore();
+  const { signInWithEmail, signUpWithEmail, changePassword, isAuthenticated } = useAuthStore();
   const { showToast } = useToastStore();
   const [isRegistering, setIsRegistering] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [isSettingNewPassword, setIsSettingNewPassword] = useState(false);
   const modalRef = useRef<HTMLDialogElement>(null);
   const {
     register,
@@ -34,12 +36,31 @@ export const AuthenticationModal: React.FC = () => {
   const isOpen = isModalOpen(MODAL_ID);
 
   useEffect(() => {
-    if (isOpen && isAuthenticated) {
+    const checkResetPasswordFlow = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (
+        session?.user?.aud === 'authenticated' &&
+        window.location.hash.includes('type=recovery')
+      ) {
+        setIsSettingNewPassword(true);
+      }
+    };
+
+    if (isOpen) {
+      checkResetPasswordFlow();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen && isAuthenticated && !isSettingNewPassword) {
       setIsChangingPassword(true);
     } else {
       setIsChangingPassword(false);
     }
-  }, [isOpen, isAuthenticated]);
+  }, [isOpen, isAuthenticated, isSettingNewPassword]);
 
   const onSubmit = async (data: IAuthForm) => {
     try {
@@ -76,7 +97,10 @@ export const AuthenticationModal: React.FC = () => {
 
   const handleForgotPassword = async (data: { email: string }) => {
     try {
-      await resetPassword(data.email);
+      const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+        redirectTo: `${window.location.origin}#recovery`,
+      });
+      if (error) throw error;
       showToast({ message: 'Password reset link sent! Check your email.', type: 'success' });
       close();
     } catch (error) {
@@ -88,30 +112,50 @@ export const AuthenticationModal: React.FC = () => {
     }
   };
 
+  const handleSetNewPassword = async (data: { newPassword: string }) => {
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: data.newPassword,
+      });
+      if (error) throw error;
+      showToast({ message: 'Password updated successfully!', type: 'success' });
+      setIsSettingNewPassword(false);
+      close();
+    } catch (error) {
+      console.error('Set new password error:', error);
+      showToast({
+        message: error instanceof Error ? error.message : 'Failed to update password',
+        type: 'error',
+      });
+    }
+  };
+
   const handleBackToLogin = () => {
     setIsForgotPassword(false);
     setIsRegistering(false);
+  };
+
+  const getModalTitle = () => {
+    if (isRegistering) return 'Create Account';
+    if (isChangingPassword) return 'Change Password';
+    if (isForgotPassword) return 'Forgot Password';
+    if (isSettingNewPassword) return 'Set New Password';
+    return 'Sign In';
   };
 
   return (
     <div className="font-sans">
       <Modal
         ref={modalRef}
-        title={
-          isRegistering
-            ? 'Create Account'
-            : isChangingPassword
-              ? 'Change Password'
-              : isForgotPassword
-                ? 'Forgot Password'
-                : 'Sign In'
-        }
+        title={getModalTitle()}
         onClose={close}
         isOpen={isOpen}
         showCloseButton={false}
       >
         {isChangingPassword ? (
           <ChangePasswordForm onSubmit={handleChangePassword} />
+        ) : isSettingNewPassword ? (
+          <ForgotPasswordSetNewPasswordForm onSubmit={handleSetNewPassword} />
         ) : isForgotPassword ? (
           <>
             <ForgotPasswordForm onSubmit={handleForgotPassword} />

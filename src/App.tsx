@@ -1,5 +1,6 @@
 import { JSX, useState } from 'react';
 import { Theme } from 'react-daisyui';
+import { AuthErrorHandler } from './components/auth/AuthErrorHandler';
 import { Toast } from './components/common/Toast';
 import { Layout } from './components/layout/Layout';
 import { AuthenticationModal } from './components/modal/auth/AuthenticationModal';
@@ -16,6 +17,7 @@ export const App = (): JSX.Element => {
   return (
     <Theme dataTheme="sunset">
       <Layout>
+        <AuthErrorHandler />
         <AuthenticationModal />
         <Toast />
         <TabNavigation categories={categories} activeTab={activeTab} onTabChange={setActiveTab} />
