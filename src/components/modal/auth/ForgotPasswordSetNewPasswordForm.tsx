@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from 'react-daisyui';
 import { useForm } from 'react-hook-form';
 import { useForgotPassword } from '../../../hooks/useForgotPassword';
-import { useModalStore } from '../../../store/modalStore';
 import { useToastStore } from '../../../store/toastStore';
 import { InputField } from '../../form/InputField';
 
@@ -11,7 +10,11 @@ interface ISetNewPasswordForm {
   confirmPassword: string;
 }
 
-export const ForgotPasswordSetNewPasswordForm: React.FC = () => {
+interface IProps {
+  onClose: () => void;
+}
+
+export const ForgotPasswordSetNewPasswordForm: React.FC<IProps> = ({ onClose }) => {
   const {
     register,
     handleSubmit,
@@ -20,7 +23,6 @@ export const ForgotPasswordSetNewPasswordForm: React.FC = () => {
   } = useForm<ISetNewPasswordForm>();
   const { setNewPassword } = useForgotPassword();
   const { showToast } = useToastStore();
-  const { close } = useModalStore();
 
   const onSubmitHandler = async (data: ISetNewPasswordForm) => {
     try {
@@ -29,7 +31,7 @@ export const ForgotPasswordSetNewPasswordForm: React.FC = () => {
         return;
       }
       await setNewPassword(data.newPassword);
-      close();
+      onClose();
     } catch (error) {
       console.error('Error setting new password:', error);
     }

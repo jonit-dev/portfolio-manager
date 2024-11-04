@@ -19,7 +19,7 @@ interface IAuthForm {
 }
 
 export const AuthenticationModal: React.FC = () => {
-  const { close, isModalOpen, open } = useModalStore();
+  const { close: closeModal, isModalOpen, open } = useModalStore();
   const { signInWithEmail, signUpWithEmail, changePassword, isAuthenticated } = useAuthStore();
   const { showToast } = useToastStore();
   const [isRegistering, setIsRegistering] = useState(false);
@@ -42,6 +42,8 @@ export const AuthenticationModal: React.FC = () => {
       if (event === 'PASSWORD_RECOVERY') {
         setIsSettingNewPassword(true);
         open(MODAL_ID);
+      } else if (event === 'SIGNED_OUT') {
+        setIsSettingNewPassword(false);
       }
     });
 
@@ -57,6 +59,11 @@ export const AuthenticationModal: React.FC = () => {
       setIsChangingPassword(false);
     }
   }, [isOpen, isAuthenticated, isSettingNewPassword]);
+
+  const close = () => {
+    setIsSettingNewPassword(false);
+    closeModal();
+  };
 
   const onSubmit = async (data: IAuthForm) => {
     try {
@@ -133,7 +140,7 @@ export const AuthenticationModal: React.FC = () => {
         {isChangingPassword ? (
           <ChangePasswordForm onSubmit={handleChangePassword} />
         ) : isSettingNewPassword ? (
-          <ForgotPasswordSetNewPasswordForm />
+          <ForgotPasswordSetNewPasswordForm onClose={close} />
         ) : isForgotPassword ? (
           <>
             <ForgotPasswordForm onSubmit={handleForgotPassword} />
