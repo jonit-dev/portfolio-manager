@@ -58,9 +58,6 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ onSubmit, register, error
           onClick={() => console.log('Continue with Google clicked')}
         />
       </div>
-      <a href="#" className="text-blue-500 text-center hover:underline">
-        Forgot password?
-      </a>
     </form>
   );
 };

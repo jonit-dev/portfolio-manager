@@ -17,6 +17,7 @@ interface IAuthState {
   signOut: () => Promise<void>;
   initializeAuth: () => Promise<void>;
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 export const useAuthStore = create<IAuthState>((set, get) => ({
@@ -111,6 +112,12 @@ export const useAuthStore = create<IAuthState>((set, get) => ({
       password: newPassword,
     });
 
+    if (error) throw error;
+  },
+  resetPassword: async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin,
+    });
     if (error) throw error;
   },
 }));

@@ -5,6 +5,7 @@ import { useModalStore } from '../../../store/modalStore';
 import { useToastStore } from '../../../store/toastStore';
 import { Modal } from '../Modal';
 import { ChangePasswordForm } from './ChangePasswordForm';
+import { ForgotPasswordForm } from './ForgotPasswordForm';
 import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
 
@@ -17,10 +18,12 @@ interface IAuthForm {
 
 export const AuthenticationModal: React.FC = () => {
   const { close, isModalOpen } = useModalStore();
-  const { signInWithEmail, signUpWithEmail, changePassword, isAuthenticated } = useAuthStore();
+  const { signInWithEmail, signUpWithEmail, changePassword, resetPassword, isAuthenticated } =
+    useAuthStore();
   const { showToast } = useToastStore();
   const [isRegistering, setIsRegistering] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const modalRef = useRef<HTMLDialogElement>(null);
   const {
     register,
@@ -30,7 +33,6 @@ export const AuthenticationModal: React.FC = () => {
 
   const isOpen = isModalOpen(MODAL_ID);
 
-  // Set initial view based on authentication status
   useEffect(() => {
     if (isOpen && isAuthenticated) {
       setIsChangingPassword(true);
@@ -72,12 +74,37 @@ export const AuthenticationModal: React.FC = () => {
     }
   };
 
+  const handleForgotPassword = async (data: { email: string }) => {
+    try {
+      await resetPassword(data.email);
+      showToast({ message: 'Password reset link sent! Check your email.', type: 'success' });
+      close();
+    } catch (error) {
+      console.error('Reset password error:', error);
+      showToast({
+        message: error instanceof Error ? error.message : 'Failed to send reset link',
+        type: 'error',
+      });
+    }
+  };
+
+  const handleBackToLogin = () => {
+    setIsForgotPassword(false);
+    setIsRegistering(false);
+  };
+
   return (
     <div className="font-sans">
       <Modal
         ref={modalRef}
         title={
-          isRegistering ? 'Create Account' : isChangingPassword ? 'Change Password' : 'Sign In'
+          isRegistering
+            ? 'Create Account'
+            : isChangingPassword
+              ? 'Change Password'
+              : isForgotPassword
+                ? 'Forgot Password'
+                : 'Sign In'
         }
         onClose={close}
         isOpen={isOpen}
@@ -85,6 +112,17 @@ export const AuthenticationModal: React.FC = () => {
       >
         {isChangingPassword ? (
           <ChangePasswordForm onSubmit={handleChangePassword} />
+        ) : isForgotPassword ? (
+          <>
+            <ForgotPasswordForm onSubmit={handleForgotPassword} />
+            <button
+              type="button"
+              onClick={handleBackToLogin}
+              className="text-blue-500 text-center hover:underline w-full mt-4"
+            >
+              Back to Login
+            </button>
+          </>
         ) : (
           <>
             {isRegistering ? (
@@ -102,6 +140,15 @@ export const AuthenticationModal: React.FC = () => {
                   ? 'Already have an account? Sign in'
                   : "Don't have an account? Create one"}
               </button>
+              {!isRegistering && (
+                <button
+                  type="button"
+                  onClick={() => setIsForgotPassword(true)}
+                  className="text-blue-500 text-center hover:underline w-full"
+                >
+                  Forgot Password?
+                </button>
+              )}
             </div>
           </>
         )}
