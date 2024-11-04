@@ -64,7 +64,7 @@ export const AuthenticationModal: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsRegistering(!isRegistering)}
-          className="text-blue-500 text-center hover:underline"
+          className="text-blue-500 text-center hover:underline w-full "
         >
           {isRegistering ? 'Already have an account? Sign in' : "Don't have an account? Create one"}
         </button>
