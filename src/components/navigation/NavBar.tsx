@@ -16,6 +16,9 @@ export const NavBar = (): JSX.Element => {
     open('authenticationModal');
   };
 
+  // Check if user is authenticated through email/password
+  const isPasswordUser = user?.provider === 'email';
+
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
@@ -49,11 +52,13 @@ export const NavBar = (): JSX.Element => {
               tabIndex={0}
               className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
             >
-              <li>
-                <button onClick={handleChangePassword} className="text-sm">
-                  Change Password
-                </button>
-              </li>
+              {isPasswordUser && (
+                <li>
+                  <button onClick={handleChangePassword} className="text-sm">
+                    Change Password
+                  </button>
+                </li>
+              )}
               <li>
                 <button onClick={signOut} className="text-sm text-error">
                   Sign Out

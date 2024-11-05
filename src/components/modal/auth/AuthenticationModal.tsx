@@ -4,7 +4,7 @@ import { supabase } from '../../../lib/supabase/supabaseClient';
 import { useAuthStore } from '../../../store/authStore';
 import { useModalStore } from '../../../store/modalStore';
 import { useToastStore } from '../../../store/toastStore';
-import { SocialLoginButton } from '../../form/SocialLoginButton'; // Updated import
+import { SocialLoginButton } from '../../form/SocialLoginButton';
 import { Modal } from '../Modal';
 import { ChangePasswordForm } from './ChangePasswordForm';
 import { ForgotPasswordForm } from './ForgotPasswordForm';
@@ -21,7 +21,7 @@ interface IAuthForm {
 
 export const AuthenticationModal: React.FC = () => {
   const { close: closeModal, isModalOpen, open } = useModalStore();
-  const { signInWithEmail, signUpWithEmail, changePassword, resetPassword, isAuthenticated } =
+  const { signInWithEmail, signUpWithEmail, changePassword, resetPassword, isAuthenticated, user } =
     useAuthStore();
   const { showToast } = useToastStore();
   const [isRegistering, setIsRegistering] = useState(false);
@@ -36,6 +36,7 @@ export const AuthenticationModal: React.FC = () => {
   } = useForm<IAuthForm>();
 
   const isOpen = isModalOpen(MODAL_ID);
+  const isPasswordUser = user?.provider === 'email';
 
   useEffect(() => {
     const {
@@ -56,11 +57,11 @@ export const AuthenticationModal: React.FC = () => {
 
   useEffect(() => {
     if (isOpen && isAuthenticated && !isSettingNewPassword) {
-      setIsChangingPassword(true);
+      setIsChangingPassword(isPasswordUser);
     } else {
       setIsChangingPassword(false);
     }
-  }, [isOpen, isAuthenticated, isSettingNewPassword]);
+  }, [isOpen, isAuthenticated, isSettingNewPassword, isPasswordUser]);
 
   const close = () => {
     setIsSettingNewPassword(false);
@@ -130,7 +131,7 @@ export const AuthenticationModal: React.FC = () => {
   return (
     <div className="font-sans">
       <Modal title={getModalTitle()} onClose={close} isOpen={isOpen} showCloseButton={false}>
-        {isChangingPassword ? (
+        {isChangingPassword && isPasswordUser ? (
           <ChangePasswordForm onSubmit={handleChangePassword} />
         ) : isSettingNewPassword ? (
           <ForgotPasswordSetNewPasswordForm onClose={close} />

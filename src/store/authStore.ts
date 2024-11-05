@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { supabase } from '../lib/supabase/supabaseClient';
+import { AuthProvider } from '../types/authProviders'; // Importing the AuthProvider enum
 import { loadingStore } from './loadingStore';
 
 interface IAuthState {
@@ -8,6 +9,7 @@ interface IAuthState {
   user: null | {
     email: string;
     name?: string;
+    provider?: AuthProvider; // Updated to use AuthProvider enum
   };
   setAuthenticated: (value: boolean) => void;
   setLoading: (value: boolean) => void;
@@ -40,6 +42,7 @@ export const useAuthStore = create<IAuthState>((set, get) => ({
           user: {
             email: data.user.email || '',
             name: data.user.user_metadata?.name,
+            provider: AuthProvider.EMAIL, // Updated to use AuthProvider enum
           },
           isAuthenticated: true,
           isLoading: false,
@@ -71,6 +74,7 @@ export const useAuthStore = create<IAuthState>((set, get) => ({
           user: {
             email: data.user.email || '',
             name: data.user.user_metadata?.name,
+            provider: AuthProvider.EMAIL, // Updated to use AuthProvider enum
           },
           isAuthenticated: true,
           isLoading: false,
@@ -106,6 +110,7 @@ export const useAuthStore = create<IAuthState>((set, get) => ({
           user: {
             email: session.user.email || '',
             name: session.user.user_metadata?.name,
+            provider: session.user.app_metadata?.provider as AuthProvider, // Updated to use AuthProvider enum
           },
           isAuthenticated: true,
           isLoading: false,
@@ -177,6 +182,7 @@ supabase.auth.onAuthStateChange((_event, session) => {
       user: {
         email: session.user.email || '',
         name: session.user.user_metadata?.name,
+        provider: session.user.app_metadata?.provider as AuthProvider, // Updated to use AuthProvider enum
       },
       isAuthenticated: true,
       isLoading: false,
