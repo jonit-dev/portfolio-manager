@@ -2,7 +2,6 @@ import React, { FormEventHandler } from 'react';
 import { Button } from 'react-daisyui';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { InputField } from '../../form/InputField';
-import { SocialLoginButton } from '../../form/SocialLoginButton';
 
 interface IAuthForm {
   email: string;
@@ -48,16 +47,6 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ onSubmit, register, error
       <Button type="submit" className="btn-primary w-full p-2">
         Sign In
       </Button>
-      <div className="flex flex-col space-y-2">
-        <SocialLoginButton
-          provider="facebook"
-          onClick={() => console.log('Continue with Facebook clicked')}
-        />
-        <SocialLoginButton
-          provider="google"
-          onClick={() => console.log('Continue with Google clicked')}
-        />
-      </div>
     </form>
   );
 };

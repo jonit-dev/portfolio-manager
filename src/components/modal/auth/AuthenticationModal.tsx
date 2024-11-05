@@ -4,6 +4,7 @@ import { supabase } from '../../../lib/supabase/supabaseClient';
 import { useAuthStore } from '../../../store/authStore';
 import { useModalStore } from '../../../store/modalStore';
 import { useToastStore } from '../../../store/toastStore';
+import { SocialLoginButton } from '../../form/SocialLoginButton'; // Updated import
 import { Modal } from '../Modal';
 import { ChangePasswordForm } from './ChangePasswordForm';
 import { ForgotPasswordForm } from './ForgotPasswordForm';
@@ -151,6 +152,7 @@ export const AuthenticationModal: React.FC = () => {
             ) : (
               <LoginForm onSubmit={handleSubmit(onSubmit)} register={register} errors={errors} />
             )}
+            <SocialLoginButton />
             <div className="flex flex-col gap-2 mt-4">
               <button
                 type="button"
