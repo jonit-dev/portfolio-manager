@@ -23,12 +23,3 @@ jobs:
           # Optional inputs with defaults
           model_id: 'anthropic/claude-3.5-sonnet:beta' # Default model
           max_tokens: '2048' # Default max tokens
-
-          # Optional custom prompt
-          custom_prompt: |
-            You are a security-focused reviewer. Analyze this PR with emphasis on:
-            1. Security vulnerabilities
-            2. Authentication issues
-            3. Data validation
-            4. Input sanitization
-            5. Best practices
