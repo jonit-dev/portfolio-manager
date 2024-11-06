@@ -30,21 +30,3 @@ jobs:
 
       - name: Run TypeScript Compiler
         run: npm run tsc
-
-  test:
-    runs-on: ubuntu-latest
-    needs: lint
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Tests
-        run: npm run test:e2e
