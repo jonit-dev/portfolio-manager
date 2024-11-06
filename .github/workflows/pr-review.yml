@@ -23,3 +23,4 @@ jobs:
           # Optional inputs with defaults
           model_id: 'anthropic/claude-3.5-sonnet:beta' # Default model
           max_tokens: '2048' # Default max tokens
+          review_label: 'ai-review'
