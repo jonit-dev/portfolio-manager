@@ -15,6 +15,11 @@ export const useGoogleSignIn = (): { signIn: () => Promise<void>; loading: boole
         provider: 'google',
         options: {
           redirectTo: window.location.origin,
+          scopes: 'email profile',
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'select_account',
+          },
         },
       });
 

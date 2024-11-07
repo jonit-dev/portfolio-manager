@@ -184,6 +184,7 @@ supabase.auth.onAuthStateChange((_event, session) => {
       (elm: string) => elm !== 'email'
     );
 
+    console.log('session', session);
     const provider = cleanedUpProvidersArray[0] as AuthProvider;
     useAuthStore.setState({
       user: {

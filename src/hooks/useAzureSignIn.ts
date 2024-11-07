@@ -14,8 +14,12 @@ export const useAzureSignIn = (): { signIn: () => Promise<void>; loading: boolea
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'azure',
         options: {
-          scopes: 'email profile',
+          scopes: 'email openid profile User.Read',
           redirectTo: window.location.origin,
+          queryParams: {
+            response_type: 'code',
+            prompt: 'select_account',
+          },
         },
       });
 
