@@ -1,33 +1,19 @@
 import React from 'react';
 import { Button } from 'react-daisyui';
 import { FaFacebook } from 'react-icons/fa';
-import { supabase } from '../../lib/supabase/supabaseClient';
-import { useModalStore } from '../../store/modalStore';
-import { useToastStore } from '../../store/toastStore';
+import { useFacebookSignIn } from '../../hooks/useFacebookSignIn';
 
 export const FacebookSignInButton: React.FC = () => {
-  const { showToast } = useToastStore();
-  const { open } = useModalStore();
-
-  const handleFacebookSignIn = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'facebook',
-    });
-
-    if (error) {
-      showToast({
-        message: error.message || 'An error occurred during Facebook sign in.',
-        type: 'error',
-      });
-      open('authenticationModal');
-    } else {
-      showToast({ message: 'Facebook sign in successful!', type: 'success' });
-    }
-  };
+  const { signIn, loading } = useFacebookSignIn();
 
   return (
-    <Button onClick={handleFacebookSignIn} className="flex items-center w-full p-2">
-      <FaFacebook className="mr-2" /> Continue with Facebook
+    <Button
+      onClick={signIn}
+      disabled={loading}
+      className="w-full p-2 flex items-center justify-center gap-2"
+    >
+      <FaFacebook />
+      {loading ? 'Signing in...' : 'Continue with Facebook'}
     </Button>
   );
 };

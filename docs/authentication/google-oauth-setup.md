@@ -1,4 +1,4 @@
-# Setting Up Google OAuth in Supabase
+# Google OAuth Setup (Supabase)
 
 This guide will walk you through configuring Google OAuth for your Supabase project to work on both local and production environments.
 
@@ -37,16 +37,22 @@ This guide will walk you through configuring Google OAuth for your Supabase proj
    ### Authorized JavaScript Origins
 
    - Add:
-     - `http://localhost:3000` (for local development)
+     - `http://localhost:5173` (for local development)
      - `https://cowcemqubuqdtpfklqkr.supabase.co` (for production)
 
    ### Authorized Redirect URIs
 
    - Add:
-     - `http://localhost:3000/auth/v1/callback` (for local development)
+     - `http://localhost:5173/auth/v1/callback` (for local development)
      - `https://cowcemqubuqdtpfklqkr.supabase.co/auth/v1/callback` (for production)
 
 5. Click **Create**. You’ll receive a **Client ID** and **Client Secret**.
+
+Add the **Client ID** to your `.env` file:
+
+```
+VITE_GOOGLE_CLIENT_ID=your-google-client-id
+```
 
 ---
 
@@ -64,7 +70,7 @@ This guide will walk you through configuring Google OAuth for your Supabase proj
 
 To test Google OAuth in both environments:
 
-- Run your application locally to ensure the redirect URI points to `http://localhost:3000/auth/v1/callback`.
+- Run your application locally to ensure the redirect URI points to `http://localhost:5173/auth/v1/callback`.
 - For production, deploy your application and test with the URI `https://cowcemqubuqdtpfklqkr.supabase.co/auth/v1/callback`.
 
 ---
