@@ -19,6 +19,8 @@ export const NavBar = (): JSX.Element => {
   // Check if user is authenticated through email/password
   const isPasswordUser = user?.provider === 'email';
 
+  console.log(user);
+
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">

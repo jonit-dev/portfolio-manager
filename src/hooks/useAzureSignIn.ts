@@ -14,6 +14,7 @@ export const useAzureSignIn = (): { signIn: () => Promise<void>; loading: boolea
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'azure',
         options: {
+          scopes: 'email',
           redirectTo: window.location.origin,
         },
       });
