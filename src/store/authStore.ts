@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { supabase } from '../lib/supabase/supabaseClient';
-import { AuthProvider } from '../types/authProviders'; // Importing the AuthProvider enum
+import { AuthProvider } from '../types/authProviders';
 import { loadingStore } from './loadingStore';
 
 interface IAuthState {
@@ -9,7 +9,7 @@ interface IAuthState {
   user: null | {
     email: string;
     name?: string;
-    provider?: AuthProvider; // Updated to use AuthProvider enum
+    provider?: AuthProvider;
   };
   setAuthenticated: (value: boolean) => void;
   setLoading: (value: boolean) => void;
@@ -42,7 +42,7 @@ export const useAuthStore = create<IAuthState>((set, get) => ({
           user: {
             email: data.user.email || '',
             name: data.user.user_metadata?.name,
-            provider: AuthProvider.EMAIL, // Updated to use AuthProvider enum
+            provider: AuthProvider.EMAIL,
           },
           isAuthenticated: true,
           isLoading: false,
@@ -74,7 +74,7 @@ export const useAuthStore = create<IAuthState>((set, get) => ({
           user: {
             email: data.user.email || '',
             name: data.user.user_metadata?.name,
-            provider: AuthProvider.EMAIL, // Updated to use AuthProvider enum
+            provider: AuthProvider.EMAIL,
           },
           isAuthenticated: true,
           isLoading: false,
@@ -106,11 +106,12 @@ export const useAuthStore = create<IAuthState>((set, get) => ({
         data: { session },
       } = await supabase.auth.getSession();
       if (session?.user) {
+        const provider = session.user.app_metadata?.provider;
         set({
           user: {
             email: session.user.email || '',
             name: session.user.user_metadata?.name,
-            provider: session.user.app_metadata?.provider as AuthProvider, // Updated to use AuthProvider enum
+            provider: provider as AuthProvider,
           },
           isAuthenticated: true,
           isLoading: false,
@@ -178,11 +179,17 @@ useAuthStore.getState().initializeAuth();
 // Listen for auth changes
 supabase.auth.onAuthStateChange((_event, session) => {
   if (session?.user) {
+    // I had to do this because the azure provider was returning an array with the 'email' field, confusing the type inference
+    const cleanedUpProvidersArray = session.user.app_metadata?.providers.filter(
+      (elm: string) => elm !== 'email'
+    );
+
+    const provider = cleanedUpProvidersArray[0] as AuthProvider;
     useAuthStore.setState({
       user: {
         email: session.user.email || '',
         name: session.user.user_metadata?.name,
-        provider: session.user.app_metadata?.provider as AuthProvider, // Updated to use AuthProvider enum
+        provider: provider as AuthProvider,
       },
       isAuthenticated: true,
       isLoading: false,

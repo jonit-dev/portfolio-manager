@@ -1,6 +1,7 @@
 import { Button } from 'react-daisyui';
 import { useAuthStore } from '../../store/authStore';
 import { useModalStore } from '../../store/modalStore';
+import { AuthProvider } from '../../types/authProviders';
 
 export const NavBar = (): JSX.Element => {
   const { open } = useModalStore();
@@ -17,9 +18,7 @@ export const NavBar = (): JSX.Element => {
   };
 
   // Check if user is authenticated through email/password
-  const isPasswordUser = user?.provider === 'email';
-
-  console.log(user);
+  const isPasswordUser = user?.provider === AuthProvider.EMAIL;
 
   return (
     <div className="navbar bg-base-100">
