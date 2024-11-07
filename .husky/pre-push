@@ -1,1 +1,1 @@
-yarn format && yarn lint && yarn tsc
+yarn format && yarn lint && yarn tsc && yarn test
