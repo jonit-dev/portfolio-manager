@@ -1,13 +1,26 @@
 import React, { FormEventHandler } from 'react';
 import { Button } from 'react-daisyui';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { z } from 'zod';
 import { InputField } from '../../form/InputField';
-import { IAuthForm } from './LoginForm';
+
+export const registerSchema = z
+  .object({
+    email: z.string().nonempty('Email is required').email('Invalid email address'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    passwordConfirmation: z.string().min(6, 'Password confirmation is required'),
+  })
+  .refine(data => data.password === data.passwordConfirmation, {
+    message: "Passwords don't match",
+    path: ['passwordConfirmation'],
+  });
+
+export type IRegisterForm = z.infer<typeof registerSchema>;
 
 interface IRegisterFormProps {
   onSubmit: FormEventHandler<HTMLFormElement>;
-  register: UseFormRegister<IAuthForm>;
-  errors: FieldErrors<IAuthForm>;
+  register: UseFormRegister<IRegisterForm>;
+  errors: FieldErrors<IRegisterForm>;
 }
 
 export const RegisterForm: React.FC<IRegisterFormProps> = ({ onSubmit, register, errors }) => {
@@ -27,6 +40,13 @@ export const RegisterForm: React.FC<IRegisterFormProps> = ({ onSubmit, register,
         placeholder="Password"
         className="w-full"
         error={errors.password?.message}
+      />
+      <InputField
+        {...register('passwordConfirmation')}
+        type="password"
+        placeholder="Confirm Password"
+        className="w-full"
+        error={errors.passwordConfirmation?.message}
       />
       <Button type="submit" className="btn-primary w-full p-2">
         Create Account

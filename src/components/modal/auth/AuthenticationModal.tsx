@@ -10,8 +10,8 @@ import { Modal } from '../Modal';
 import { ChangePasswordForm } from './ChangePasswordForm';
 import { ForgotPasswordForm } from './ForgotPasswordForm';
 import { ForgotPasswordSetNewPasswordForm } from './ForgotPasswordSetNewPasswordForm';
-import { IAuthForm, LoginForm, loginSchema } from './LoginForm';
-import { RegisterForm } from './RegisterForm';
+import { ILoginForm, LoginForm, loginSchema } from './LoginForm';
+import { IRegisterForm, RegisterForm, registerSchema } from './RegisterForm';
 
 const MODAL_ID = 'authenticationModal';
 
@@ -26,11 +26,19 @@ export const AuthenticationModal: React.FC = () => {
   const [isSettingNewPassword, setIsSettingNewPassword] = useState(false);
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IAuthForm>({
+    register: loginRegister,
+    handleSubmit: handleLoginSubmit,
+    formState: { errors: loginErrors },
+  } = useForm<ILoginForm>({
     resolver: zodResolver(loginSchema),
+  });
+
+  const {
+    register: registerRegister,
+    handleSubmit: handleRegisterSubmit,
+    formState: { errors: registerErrors },
+  } = useForm<IRegisterForm>({
+    resolver: zodResolver(registerSchema),
   });
 
   const isOpen = isModalOpen(MODAL_ID);
@@ -66,15 +74,24 @@ export const AuthenticationModal: React.FC = () => {
     closeModal();
   };
 
-  const onSubmit = async (data: IAuthForm) => {
+  const onLoginSubmit = async (data: ILoginForm) => {
     try {
-      if (isRegistering) {
-        await signUpWithEmail(data.email, data.password);
-        showToast({ message: 'Account created successfully!', type: 'success' });
-      } else {
-        await signInWithEmail(data.email, data.password);
-        showToast({ message: 'Signed in successfully!', type: 'success' });
-      }
+      await signInWithEmail(data.email, data.password);
+      showToast({ message: 'Signed in successfully!', type: 'success' });
+      close();
+    } catch (error) {
+      console.error('Authentication error:', error);
+      showToast({
+        message: error instanceof Error ? error.message : 'Authentication failed',
+        type: 'error',
+      });
+    }
+  };
+
+  const onRegisterSubmit = async (data: IRegisterForm) => {
+    try {
+      await signUpWithEmail(data.email, data.password);
+      showToast({ message: 'Account created successfully!', type: 'success' });
       close();
     } catch (error) {
       console.error('Authentication error:', error);
@@ -147,9 +164,17 @@ export const AuthenticationModal: React.FC = () => {
         ) : (
           <>
             {isRegistering ? (
-              <RegisterForm onSubmit={handleSubmit(onSubmit)} register={register} errors={errors} />
+              <RegisterForm
+                onSubmit={handleRegisterSubmit(onRegisterSubmit)}
+                register={registerRegister}
+                errors={registerErrors}
+              />
             ) : (
-              <LoginForm onSubmit={handleSubmit(onSubmit)} register={register} errors={errors} />
+              <LoginForm
+                onSubmit={handleLoginSubmit(onLoginSubmit)}
+                register={loginRegister}
+                errors={loginErrors}
+              />
             )}
             <SocialLoginButton />
             <div className="flex flex-col gap-2 mt-4">

@@ -9,12 +9,12 @@ export const loginSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
-export type IAuthForm = z.infer<typeof loginSchema>;
+export type ILoginForm = z.infer<typeof loginSchema>;
 
 interface ILoginFormProps {
   onSubmit: FormEventHandler<HTMLFormElement>;
-  register: UseFormRegister<IAuthForm>;
-  errors: FieldErrors<IAuthForm>;
+  register: UseFormRegister<ILoginForm>;
+  errors: FieldErrors<ILoginForm>;
 }
 
 export const LoginForm: React.FC<ILoginFormProps> = ({ onSubmit, register, errors }) => {
