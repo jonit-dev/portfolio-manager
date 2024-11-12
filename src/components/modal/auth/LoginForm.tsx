@@ -1,12 +1,15 @@
 import React, { FormEventHandler } from 'react';
 import { Button } from 'react-daisyui';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { z } from 'zod';
 import { InputField } from '../../form/InputField';
 
-interface IAuthForm {
-  email: string;
-  password: string;
-}
+export const loginSchema = z.object({
+  email: z.string().nonempty('Email is required').email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+});
+
+export type IAuthForm = z.infer<typeof loginSchema>;
 
 interface ILoginFormProps {
   onSubmit: FormEventHandler<HTMLFormElement>;
@@ -19,26 +22,14 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ onSubmit, register, error
     <form onSubmit={onSubmit} className="flex flex-col space-y-6 p-6">
       <p className="text-center text-gray-500">Sign in to your account to continue</p>
       <InputField
-        {...register('email', {
-          required: 'Email is required',
-          pattern: {
-            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            message: 'Invalid email address',
-          },
-        })}
+        {...register('email')}
         type="email"
         placeholder="Email address"
         className="w-full"
         error={errors.email?.message}
       />
       <InputField
-        {...register('password', {
-          required: 'Password is required',
-          minLength: {
-            value: 6,
-            message: 'Password must be at least 6 characters',
-          },
-        })}
+        {...register('password')}
         type="password"
         placeholder="Password"
         className="w-full"

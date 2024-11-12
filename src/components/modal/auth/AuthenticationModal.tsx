@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { supabase } from '../../../lib/supabase/supabaseClient';
@@ -9,15 +10,10 @@ import { Modal } from '../Modal';
 import { ChangePasswordForm } from './ChangePasswordForm';
 import { ForgotPasswordForm } from './ForgotPasswordForm';
 import { ForgotPasswordSetNewPasswordForm } from './ForgotPasswordSetNewPasswordForm';
-import { LoginForm } from './LoginForm';
+import { IAuthForm, LoginForm, loginSchema } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
 
 const MODAL_ID = 'authenticationModal';
-
-interface IAuthForm {
-  email: string;
-  password: string;
-}
 
 export const AuthenticationModal: React.FC = () => {
   const { close: closeModal, isModalOpen, open } = useModalStore();
@@ -33,7 +29,9 @@ export const AuthenticationModal: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IAuthForm>();
+  } = useForm<IAuthForm>({
+    resolver: zodResolver(loginSchema),
+  });
 
   const isOpen = isModalOpen(MODAL_ID);
   const isPasswordUser = user?.provider === 'email';
