@@ -1,3 +1,4 @@
+import { loadEnv } from '@config/env';
 import { Button } from 'react-daisyui';
 import { useAuthStore } from '../../store/authStore';
 import { useModalStore } from '../../store/modalStore';
@@ -19,11 +20,12 @@ export const NavBar = (): JSX.Element => {
 
   // Check if user is authenticated through email/password
   const isPasswordUser = user?.provider === AuthProvider.EMAIL;
+  const { VITE_APP_NAME } = loadEnv();
 
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl">Portfolio Manager</a>
+        <a className="btn btn-ghost normal-case text-xl">{VITE_APP_NAME}</a>
       </div>
       <div className="flex-none gap-2">
         {!isAuthenticated ? (
