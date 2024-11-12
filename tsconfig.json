@@ -17,13 +17,16 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
+      //! Remember to change on vite.config.ts as well!
       "@store/*": ["src/store/*"],
       "@components/*": ["src/components/*"],
       "@hooks/*": ["src/hooks/*"],
       "@lib/*": ["src/lib/*"],
       "@types/*": ["src/types/*"],
       "@views/*": ["src/views/*"],
-      "@config/*": ["src/config/*"]
+      "@config/*": ["src/config/*"],
+      "@validation/*": ["src/validation/*"],
+      "@mocks/*": ["src/mocks/*"]
     }
   },
   "include": ["src/**/*"]

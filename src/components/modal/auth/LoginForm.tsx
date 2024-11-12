@@ -1,13 +1,9 @@
 import React, { FormEventHandler } from 'react';
 import { Button } from 'react-daisyui';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { loginSchema } from 'src/validation/authValidationSchema';
 import { z } from 'zod';
 import { InputField } from '../../form/InputField';
-
-export const loginSchema = z.object({
-  email: z.string().nonempty('Email is required').email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-});
 
 export type ILoginForm = z.infer<typeof loginSchema>;
 

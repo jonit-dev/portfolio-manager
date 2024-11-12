@@ -15,6 +15,8 @@ export const viteConfig = defineConfig({
       '@types': path.resolve(__dirname, './src/types'),
       '@views': path.resolve(__dirname, './src/views'),
       '@config': path.resolve(__dirname, './src/config'),
+      '@validation': path.resolve(__dirname, './src/validation'),
+      '@mocks': path.resolve(__dirname, './src/mocks'),
     },
   },
 });

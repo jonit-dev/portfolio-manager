@@ -2,18 +2,8 @@ import React, { FormEventHandler } from 'react';
 import { Button } from 'react-daisyui';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { z } from 'zod';
+import { registerSchema } from '../../../validation/authValidationSchema';
 import { InputField } from '../../form/InputField';
-
-export const registerSchema = z
-  .object({
-    email: z.string().nonempty('Email is required').email('Invalid email address'),
-    password: z.string().min(6, 'Password must be at least 6 characters'),
-    passwordConfirmation: z.string().min(6, 'Password confirmation is required'),
-  })
-  .refine(data => data.password === data.passwordConfirmation, {
-    message: "Passwords don't match",
-    path: ['passwordConfirmation'],
-  });
 
 export type IRegisterForm = z.infer<typeof registerSchema>;
 

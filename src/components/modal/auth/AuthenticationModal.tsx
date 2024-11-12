@@ -1,17 +1,18 @@
+import { SocialLoginButton } from '@components/form/SocialLoginButton';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { supabase } from '@lib/supabase/supabaseClient';
+import { useAuthStore } from '@store/authStore';
+import { useModalStore } from '@store/modalStore';
+import { useToastStore } from '@store/toastStore';
+import { loginSchema, registerSchema } from '@validation/authValidationSchema';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { supabase } from '../../../lib/supabase/supabaseClient';
-import { useAuthStore } from '../../../store/authStore';
-import { useModalStore } from '../../../store/modalStore';
-import { useToastStore } from '../../../store/toastStore';
-import { SocialLoginButton } from '../../form/SocialLoginButton';
 import { Modal } from '../Modal';
 import { ChangePasswordForm } from './ChangePasswordForm';
 import { ForgotPasswordForm } from './ForgotPasswordForm';
 import { ForgotPasswordSetNewPasswordForm } from './ForgotPasswordSetNewPasswordForm';
-import { ILoginForm, LoginForm, loginSchema } from './LoginForm';
-import { IRegisterForm, RegisterForm, registerSchema } from './RegisterForm';
+import { ILoginForm, LoginForm } from './LoginForm';
+import { IRegisterForm, RegisterForm } from './RegisterForm';
 
 const MODAL_ID = 'authenticationModal';
 
